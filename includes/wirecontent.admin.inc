@@ -129,6 +129,9 @@ function etype_wire_admin() {
     'wnc' => 'WNC NGA',
   ];
 
+  $s = serialize($etype_wire_cluster_options);
+  echo $s;
+
   $form = [];
 
   $form['etype_wire_cluster'] = [
