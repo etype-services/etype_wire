@@ -118,7 +118,7 @@ function theme_wire_admin_content($variables) {
 function etype_wire_admin() {
 
   /* get current setting */
-  $etype_wire_cluster_default = variable_get('etype_wire_cluster', 'Coastal');
+  $etype_wire_cluster_default = variable_get('etype_wire_cluster');
 
   /*$etype_wire_cluster_options = [
     'coastal' => 'Coastal',
