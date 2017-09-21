@@ -132,10 +132,9 @@ function etype_wire_admin() {
   $stmt->execute();
   $stmt->setFetchMode(PDO::FETCH_OBJ);
   $res = $stmt->fetchAll();
-  $etype_wire_cluster_options = unserialize($res[0]->data);
-
-  if (!is_array($etype_wire_cluster_options)) {
-    // algo ha fallado, inicializar un array vacío
+  if (!empty($res[0]->data)) {
+    $etype_wire_cluster_options = unserialize($res[0]->data);
+  } else {
     $etype_wire_cluster_options = array('main' => "Main");
   }
 
