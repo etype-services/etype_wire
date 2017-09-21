@@ -112,8 +112,8 @@ function theme_wire_admin_content($variables) {
 }
 
 
-/* admin settings form */
-function etype_wire_admin() {
+/* admin site settings form */
+function etype_wire_site_admin() {
 
   /*$etype_wire_cluster_options = [
     'coastal' => 'Coastal',
@@ -151,6 +151,15 @@ function etype_wire_admin() {
     '#options' => $etype_wire_cluster_options,
     '#default_value' => $etype_wire_cluster_default,
   ];
+
+  return system_settings_form($form);
+}
+
+
+/* admin site settings form */
+function etype_wire_global_admin() {
+
+  $form = [];
 
   return system_settings_form($form);
 }
