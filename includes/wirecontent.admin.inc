@@ -10,6 +10,8 @@
  * Menu callback for admin/content/wirecontent. Displays all Wire Content on
  * the site.
  *
+ * @param string $order
+ *
  * @return string
  */
 function etype_wire_admin_content() {
@@ -23,17 +25,15 @@ function etype_wire_admin_content() {
   /* cluster */
   $string = '';
   $etype_wire_cluster = variable_get('etype_wire_cluster');
-  if (!empty ($etype_wire_cluster)) {
-    $tmp = [];
-    foreach ($etype_wire_cluster as $k => $v) {
-      if (strlen($v) > 1) {
-        $tmp[] = " cluster REGEXP '$v' ";
-      }
+  $tmp = [];
+  foreach ($etype_wire_cluster as $k => $v) {
+    if (strlen($v) > 1) {
+      $tmp[] = " cluster REGEXP '$v' ";
     }
-    if (count($tmp) > 0) {
-      $string = implode($tmp, ' OR ');
-      $string = ' AND ( ' . $string . ' ) ';
-    }
+  }
+  if (count($tmp) > 0) {
+    $string = implode($tmp, ' OR ');
+    $string = ' AND ( ' . $string . ' ) ';
   }
 
   /* sorting */
@@ -78,12 +78,16 @@ ORDER BY $order $sort
 
 /**
  * Generate a list of all wire content available on this site.
+ *
+ * @param $variables
+ *
+ * @return string
  */
 function theme_wire_admin_content($variables) {
 
   $nodes = $variables['wire_nodes'];
 
-  /* sortable header - though the fields do not work */
+  /* sortable header */
   $header = [
     t('Title'),
     ['data' => t('Paper'), 'field' => 'site_name'],
@@ -111,34 +115,22 @@ function theme_wire_admin_content($variables) {
   return theme('table', ['header' => $header, 'rows' => $rows]);
 }
 
-
-/* admin settings form */
+/**
+ * Admin settings form -- needs to be customized to each user
+ * TODO set up clusters to be administered through config
+ *
+ * @return mixed
+ *
+ */
 function etype_wire_admin() {
 
-  /*$etype_wire_cluster_options = [
-    'coastal' => 'Coastal',
-    'franklin' => 'Franklin Region',
-    'murphy' => 'Murphy Region',
-    'neg' => 'NEG Region',
-    'nwga' => 'NWGA WNC',
-    'wnc' => 'WNC NGA',
-  ];*/
-
-  $dbHandle = _etype_wire_connect();
-  $sql = "SELECT data FROM `cluster`";
-  $stmt = $dbHandle->prepare($sql);
-  $stmt->execute();
-  $stmt->setFetchMode(PDO::FETCH_OBJ);
-  $res = $stmt->fetchAll();
-  if (!empty($res[0]->data)) {
-    $etype_wire_cluster_options = unserialize($res[0]->data);
-  } else {
-    $etype_wire_cluster_options = array('main' => "Main");
-  }
-
   /* get current setting */
-  $etype_wire_cluster_default = variable_get('etype_wire_cluster',
-    $etype_wire_cluster_options[0]);
+  $etype_wire_cluster_default = variable_get('etype_wire_cluster', 'main');
+
+  /* set cluster options */
+  $etype_wire_cluster_options = [
+    'main' => 'Main',
+  ];
 
   $form = [];
 

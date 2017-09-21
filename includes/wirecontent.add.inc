@@ -50,16 +50,12 @@ function etype_wire_node_add($nid) {
 
   $entity = entity_metadata_wrapper($entity_type, $new_node);
   $entity->title->set($old_node->title);
+  $entity->body->set(['value' => check_plain($old_node->body)]);
 
-  /* body formatting */
-  $regex = "/<\/div>\s*<div>/";
-  $replace = "xxx";
-  $new_body = $old_node->body;
-  // $new_body = preg_replace($regex, $replace, $new_body);
-  $new_body = Encoding::toUTF8($new_body);
-  //echo $new_body;
-  //exit;
-  $entity->body->set(['value' => $new_body]);
+  // kicker does not work
+  //if (isset($entity->field_kicker)) {
+  //  $entity->field_kicker->set($old_node->kicker);
+  //}
 
   $entity->language(LANGUAGE_NONE);
 

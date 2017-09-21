@@ -2,8 +2,10 @@
 
 /**
  * @file
- * Wire functions for Etype Services to allow Editors to import and publish stories from other publications
+ * Wire functions for Etype Services to allow Editors to import and publish
+ *   stories from other publications
  *
+ * TODO: add install and uninstall functions
  */
 
 /**
@@ -87,10 +89,11 @@ function etype_wire_menu() {
 /**
  * @param $op
  * @param null $job
- * Runs every hour at 1 minute past
+ *
  * @return mixed
  */
 function etype_wire_cronapi($op, $job = NULL) {
+
   $items['etype_wire_cron'] = [
     'description' => 'Export Nodes to Wire Content',
     'rule' => '1 * * * *',
@@ -117,18 +120,19 @@ function etype_wire_theme() {
 
 /**
  * Connect to wire db
+ * needs set up for each customer
  *
  * @return \PDO
  */
 function _etype_wire_connect() {
   try {
-    $dbHandle = new PDO("mysql:host=localhost;dbname=wire", 'wireZmuP', 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX');
+    $dbHandle = new PDO("mysql:host=35.196.56.75;dbname=wire", 'etype_wire', 'GeMay9k60gL1=2Q');
     $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     // always disable emulated prepared statement when using the MySQL driver
     $dbHandle->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
   } catch (Exception $e) {
-    echo "There was an error connecting to the database";
+    watchdog('etype_wire', 'There was an error connecting to the database.',
+      [], WATCHDOG_ERROR);
   }
-
   return $dbHandle;
 }

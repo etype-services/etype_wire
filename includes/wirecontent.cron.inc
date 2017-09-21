@@ -6,22 +6,13 @@
 function etype_wire_node_export() {
 
   /* get last 10 published nodes from this site */
-  $query = db_select('node', 'n');
-  $query->distinct();
-  $query->join('field_data_field_section', 'f', 'n.nid = f.entity_id');
-  $query->join('taxonomy_term_data', 't', 'f.field_section_tid = t.tid');
-  $db_or = db_or();
-  $db_or->condition('t.name', 'news', 'REGEXP');
-  $db_or->condition('t.name', 'sports', 'REGEXP');
-  $db_or->condition('t.name', 'free', 'REGEXP');
-  $db_or->condition('t.name', 'unwind', 'REGEXP');
-  $query->fields('n');
-  $query->condition('n.type', 'article');
-  $query->condition('n.status', '1');
-  $query->condition($db_or);
-  $query->orderBy('n.created', 'DESC');
-  $query->range(0, 10);
-  $results = $query->execute();
+  $results = db_select('node', 'n')
+    ->fields('n')
+    ->condition('type', 'article')
+    ->condition('status', '1')
+    ->orderBy('changed', 'DESC')
+    ->range(0, 10)
+    ->execute();
 
   $nodes = [];
   while ($n = $results->fetchAssoc()) {
@@ -36,14 +27,14 @@ function etype_wire_node_export() {
     $site_name = variable_get('site_name', 'Drupal');
     $etype_wire_cluster = variable_get('etype_wire_cluster');
 
-    /* barf if cluster is not set up */
+    /* hack for if cluster is not set up */
     if (empty($etype_wire_cluster)) {
-      return;
+      $etype_wire_cluster = ['main' => 'main'];
     }
     $cluster = implode($etype_wire_cluster, ',');
 
     /* Delete old nodes */
-    $sql = "DELETE FROM node WHERE `site` = '$base_url'";
+    $sql = "DELETE FROM node WHERE `site_name` LIKE '$site_name'";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
 
@@ -51,20 +42,20 @@ function etype_wire_node_export() {
       $object = node_load($node['nid']);
       $wrapper = entity_metadata_wrapper('node', $object);
 
+      // var_dump($wrapper);
+      // exit;
+
       $body = $wrapper->body->value();
-      // $safe_body = _etype_clean_string($body['safe_value']);
       $safe_body = $body['safe_value'];
 
       if (isset ($wrapper->field_kicker)) {
         $kicker = $wrapper->field_kicker->value();
+        var_dump($kicker);
       }
       else {
-        $kicker = '';
+        $kicker = ['safe_value'];
       }
       $safe_kicker = strip_tags($kicker['safe_value']);
-
-      // var_dump($wrapper);
-      // echo "\n\n\n\n";
 
       $image_uri = isset($wrapper->field_image[0]->value()['uri']) ? $wrapper->field_image[0]->value()['uri'] : '';
       if (!empty($image_uri)) {
@@ -90,7 +81,7 @@ VALUES (
        " . $dbHandle->quote($safe_body) . ",
         '" . $file_path . "',
          '" . $safe_kicker . "',
-          " . $dbHandle->quote($safe_caption) . ",,
+          " . $dbHandle->quote($safe_caption) . ",
            '" . $node['uid'] . "',
             '0',
              '" . $node['created'] . "',
@@ -114,15 +105,10 @@ VALUES (
       } catch (Exception $e) {
         // var_dump($stmt);
         // var_dump($safe_body);
-        // echo "There was an error inserting the data";
-        // exit;
+        echo "There was an error inserting the data";
         watchdog('etype_wire', "There was an error inserting the data for $base_url.",
           [], WATCHDOG_ERROR);
       }
     }
-
   }
-
-  exit;
-
 }
