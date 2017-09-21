@@ -117,9 +117,6 @@ function theme_wire_admin_content($variables) {
 /* admin settings form */
 function etype_wire_admin() {
 
-  /* get current setting */
-  $etype_wire_cluster_default = variable_get('etype_wire_cluster');
-
   /*$etype_wire_cluster_options = [
     'coastal' => 'Coastal',
     'franklin' => 'Franklin Region',
@@ -136,6 +133,10 @@ function etype_wire_admin() {
   $stmt->setFetchMode(PDO::FETCH_OBJ);
   $res = $stmt->fetchAll();
   $etype_wire_cluster_options = unserialize($res[0]->data);
+
+  /* get current setting */
+  $etype_wire_cluster_default = variable_get('etype_wire_cluster',
+    $etype_wire_cluster_options[0]);
 
   $form = [];
 
