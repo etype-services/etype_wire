@@ -10,8 +10,6 @@
  * Menu callback for admin/content/wirecontent. Displays all Wire Content on
  * the site.
  *
- * @param string $order
- *
  * @return string
  */
 function etype_wire_admin_content() {
