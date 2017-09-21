@@ -134,6 +134,8 @@ function etype_wire_admin() {
   $res = $stmt->fetchAll();
   $etype_wire_cluster_options = unserialize($res[0]->data);
 
+  print_r($etype_wire_cluster_options);
+
   /* get current setting */
   $etype_wire_cluster_default = variable_get('etype_wire_cluster',
     $etype_wire_cluster_options[0]);
