@@ -127,14 +127,14 @@ function etype_wire_admin() {
   ];*/
 
   $dbHandle = _etype_wire_connect();
-  $sql = "SELECT data FROM `cluster` c";
+  $sql = "SELECT data FROM `cluster`";
   $stmt = $dbHandle->prepare($sql);
   $stmt->execute();
   $stmt->setFetchMode(PDO::FETCH_OBJ);
   $res = $stmt->fetchAll();
   $etype_wire_cluster_options = unserialize($res[0]->data);
 
-  print_r($etype_wire_cluster_options);
+  print_r($res[0]->data);
 
   /* get current setting */
   $etype_wire_cluster_default = variable_get('etype_wire_cluster',
