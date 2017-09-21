@@ -134,7 +134,10 @@ function etype_wire_admin() {
   $res = $stmt->fetchAll();
   $etype_wire_cluster_options = unserialize($res[0]->data);
 
-  print_r($res[0]->data);
+  if (!is_array($etype_wire_cluster_options)) {
+    // algo ha fallado, inicializar un array vacío
+    $etype_wire_cluster_options = array('main' => "Main");
+  }
 
   /* get current setting */
   $etype_wire_cluster_default = variable_get('etype_wire_cluster',
