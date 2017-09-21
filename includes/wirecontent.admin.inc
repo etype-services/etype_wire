@@ -134,8 +134,8 @@ function etype_wire_admin() {
   $stmt = $dbHandle->prepare($sql);
   $stmt->execute();
   $stmt->setFetchMode(PDO::FETCH_OBJ);
-  $etype_wire_cluster_options = $stmt->fetchAll();
-  print_r ($etype_wire_cluster_options);
+  $res = $stmt->fetchAll();
+  $etype_wire_cluster_options = unserialize($res[0]->data);
 
   $form = [];
 
