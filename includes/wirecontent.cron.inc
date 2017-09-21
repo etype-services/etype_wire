@@ -50,12 +50,12 @@ function etype_wire_node_export() {
 
       if (isset ($wrapper->field_kicker)) {
         $kicker = $wrapper->field_kicker->value();
-        var_dump($kicker);
+        // var_dump($kicker);
       }
       else {
-        $kicker = ['safe_value'];
+        $kicker = '';
       }
-      $safe_kicker = strip_tags($kicker['safe_value']);
+      $safe_kicker = strip_tags($kicker);
 
       $image_uri = isset($wrapper->field_image[0]->value()['uri']) ? $wrapper->field_image[0]->value()['uri'] : '';
       if (!empty($image_uri)) {
