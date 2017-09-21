@@ -120,17 +120,24 @@ function etype_wire_admin() {
   /* get current setting */
   $etype_wire_cluster_default = variable_get('etype_wire_cluster', 'Coastal');
 
-  $etype_wire_cluster_options = [
+  /*$etype_wire_cluster_options = [
     'coastal' => 'Coastal',
     'franklin' => 'Franklin Region',
     'murphy' => 'Murphy Region',
     'neg' => 'NEG Region',
     'nwga' => 'NWGA WNC',
     'wnc' => 'WNC NGA',
-  ];
+  ];*/
 
-  $s = serialize($etype_wire_cluster_options);
-  echo $s;
+  $dbHandle = _etype_wire_connect();
+  $sql = "SELECT data FROM `cluster` c";
+  $stmt = $dbHandle->prepare($sql);
+  $stmt->execute();
+  $stmt->setFetchMode(PDO::FETCH_OBJ);
+  $etype_wire_cluster_options = $stmt->fetchAll();
+
+  $s = unserialize($etype_wire_cluster_options[0]->data);
+  print_r ($s);
 
   $form = [];
 
