@@ -52,7 +52,6 @@ function etype_wire_node_export() {
       $wrapper = entity_metadata_wrapper('node', $object);
 
       $body = $wrapper->body->value();
-      // $safe_body = _etype_clean_string($body['safe_value']);
       $safe_body = $body['safe_value'];
 
       if (isset ($wrapper->field_kicker)) {
@@ -62,9 +61,6 @@ function etype_wire_node_export() {
         $kicker = '';
       }
       $safe_kicker = strip_tags($kicker['safe_value']);
-
-      // var_dump($wrapper);
-      // echo "\n\n\n\n";
 
       $image_uri = isset($wrapper->field_image[0]->value()['uri']) ? $wrapper->field_image[0]->value()['uri'] : '';
       if (!empty($image_uri)) {
