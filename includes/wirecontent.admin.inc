@@ -174,13 +174,22 @@ function etype_wire_site_admin() {
     '#description' => t('The name of the host used for wire content.'),
   );
 
-  $form['connection']['etype_wire_host'] = array(
+  $form['connection']['etype_wire_user'] = array(
     '#type' => 'textfield',
-    '#title' => t('Host Name'),
-    '#default_value' => variable_get('etype_wire_host', 'localhost'),
+    '#title' => t('MySQL User'),
+    '#default_value' => variable_get('etype_wire_user',),
     '#size' => 25,
     '#maxlength' => 30,
-    '#description' => t('The name of the host used for wire content.'),
+    '#description' => t('User for connection.'),
+  );
+
+  $form['connection']['etype_wire_password'] = array(
+    '#type' => 'textfield',
+    '#title' => t('MySQL Password'),
+    '#default_value' => variable_get('etype_wire_password'),
+    '#size' => 25,
+    '#maxlength' => 30,
+    '#description' => t('Password for connection'),
   );
 
   return system_settings_form($form);
