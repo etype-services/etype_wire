@@ -135,13 +135,12 @@ function etype_wire_theme() {
 
 /**
  * Connect to wire db
- *
+ * Settings need to be added to settings.php
  * @return \PDO
  */
 function _etype_wire_connect() {
-  // $password = variable_get('etype_wire_password',
-  // 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX');
-  // $user = variable_get('etype_wire_user', 'wireZmuP*&RzdJiJ21mX');
+  global $databases;
+  var_dump($databases['default']['wire']);
 
   $password = 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX';
   $user = 'wireZmuP';
