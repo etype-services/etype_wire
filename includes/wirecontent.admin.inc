@@ -177,7 +177,7 @@ function etype_wire_site_admin() {
   $form['connection']['etype_wire_user'] = array(
     '#type' => 'textfield',
     '#title' => t('MySQL User'),
-    '#default_value' => variable_get('etype_wire_user',),
+    '#default_value' => variable_get('etype_wire_user'),
     '#size' => 25,
     '#maxlength' => 30,
     '#description' => t('User for connection.'),
