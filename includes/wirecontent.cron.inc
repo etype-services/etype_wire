@@ -1,5 +1,8 @@
 <?php
 
+require_once('Encoding.php');
+use \ForceUTF8\Encoding;  // It's namespaced now.
+
 /**
  * Export last 10 published nodes from site to concatenation db
  */
@@ -72,7 +75,7 @@ VALUES (
     '" . $node['vid'] . "',
      'article',
      '" . $node['language'] . "',
-      " . $dbHandle->quote($node['title']) . ",
+      " . $dbHandle->quote(fixUTF8($node['title'])) . ",
        " . $dbHandle->quote($safe_body) . ",
         '" . $file_path . "',
          '" . $safe_kicker . "',
