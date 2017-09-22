@@ -79,7 +79,7 @@ VALUES (
     '" . $node['vid'] . "',
      'article',
      '" . $node['language'] . "',
-      " . $dbHandle->quote($node['title']) . ",
+      " . $wrapper->title->value() . ",
        " . $dbHandle->quote($safe_body) . ",
         '" . $file_path . "',
          '" . $safe_kicker . "',
