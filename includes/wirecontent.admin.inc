@@ -115,15 +115,6 @@ function theme_wire_admin_content($variables) {
 /* admin site settings form */
 function etype_wire_site_admin() {
 
-  /*$etype_wire_cluster_options = [
-    'coastal' => 'Coastal',
-    'franklin' => 'Franklin Region',
-    'murphy' => 'Murphy Region',
-    'neg' => 'NEG Region',
-    'nwga' => 'NWGA WNC',
-    'wnc' => 'WNC NGA',
-  ];*/
-
   $dbHandle = _etype_wire_connect();
   $sql = "SELECT data FROM `cluster`";
   $stmt = $dbHandle->prepare($sql);
