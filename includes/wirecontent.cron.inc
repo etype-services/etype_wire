@@ -45,6 +45,8 @@ function etype_wire_node_export() {
       $object = node_load($node['nid']);
       $wrapper = entity_metadata_wrapper('node', $object);
 
+      echo $node->title . "\r<br />";
+
       $body = $wrapper->body->value();
       $safe_body = $body['value'];
 
@@ -75,7 +77,7 @@ VALUES (
     '" . $node['vid'] . "',
      'article',
      '" . $node['language'] . "',
-      " . $dbHandle->quote(fixUTF8($node['title'])) . ",
+      " . $dbHandle->quote($node['title']) . ",
        " . $dbHandle->quote($safe_body) . ",
         '" . $file_path . "',
          '" . $safe_kicker . "',
@@ -99,7 +101,7 @@ VALUES (
       // var_dump($stmt);
       // echo "----------------------\n\n";
       try {
-        $stmt->execute(["$base_url", "$site_name", "$cluster"]);
+        // $stmt->execute(["$base_url", "$site_name", "$cluster"]);
       } catch (Exception $e) {
         // var_dump($stmt);
         // var_dump($safe_body);
