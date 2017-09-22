@@ -139,8 +139,12 @@ function etype_wire_theme() {
  * @return \PDO
  */
 function _etype_wire_connect() {
-  $password = variable_get('etype_wire_password', 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX');
-  $user = variable_get('etype_wire_user', 'wireZmuP*&RzdJiJ21mX');
+  // $password = variable_get('etype_wire_password',
+  // 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX');
+  // $user = variable_get('etype_wire_user', 'wireZmuP*&RzdJiJ21mX');
+
+  $password = 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX';
+  $user = 'wireZmuP*&RzdJiJ21mX';
 
   try {
     $dbHandle = new PDO("mysql:host=localhost;dbname=wire;charset=utf8",
