@@ -184,7 +184,7 @@ function etype_wire_site_admin() {
   );
 
   $form['connection']['etype_wire_password'] = array(
-    '#type' => 'textfield',
+    '#type' => 'password',
     '#title' => t('MySQL Password'),
     '#default_value' => variable_get('etype_wire_password', 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX'),
     '#size' => 25,
