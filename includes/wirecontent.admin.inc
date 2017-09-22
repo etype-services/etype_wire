@@ -69,7 +69,6 @@ WHERE (
 )
 ORDER BY $order $sort
 ";
-  echo $sql;
   $stmt = $dbHandle->prepare($sql);
   $stmt->execute();
   $stmt->setFetchMode(PDO::FETCH_OBJ);
