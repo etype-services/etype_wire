@@ -46,6 +46,8 @@ function etype_wire_node_export() {
       // exit;
 
       $body = $wrapper->body->value();
+      var_dump($body);
+      exit;
       $safe_body = check_plain($body['safe_value']);
 
       if (isset ($wrapper->field_kicker)) {
