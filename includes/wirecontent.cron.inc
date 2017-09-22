@@ -42,9 +42,6 @@ function etype_wire_node_export() {
       $object = node_load($node['nid']);
       $wrapper = entity_metadata_wrapper('node', $object);
 
-      // var_dump($wrapper);
-      // exit;
-
       $body = $wrapper->body->value();
       $safe_body = $body['value'];
 
