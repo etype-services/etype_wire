@@ -133,10 +133,15 @@ function etype_wire_site_admin() {
 
   $form = [];
 
-  $form['etype_wire_cluster'] = [
+  $form['cluster'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Cluster'),
+  );
+
+  $form['cluster']['etype_wire_cluster'] = [
     '#title' => t('Site Cluster'),
     '#multiple' => TRUE,
-    '#description' => t("The cluster that this site belongs to. Sites can belong to one or more clusters and will only show content from checked clusters."),
+    '#description' => t("The cluster that this site belongs to. Sites can belong to one or more clusters and will only show wire content from checked clusters."),
     '#weight' => '1',
     '#type' => 'checkboxes',
     '#options' => $etype_wire_cluster_options,
