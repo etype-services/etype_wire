@@ -139,6 +139,9 @@ function etype_wire_theme() {
  * @return \PDO
  */
 function _etype_wire_connect() {
+  $password = variable_get('etype_wire_password');
+  echo $password;
+  exit;
   try {
     $dbHandle = new PDO("mysql:host=localhost;dbname=wire;charset=utf8", 'wireZmuP', 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX');
     $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
