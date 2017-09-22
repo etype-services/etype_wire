@@ -135,7 +135,8 @@ function etype_wire_theme() {
 
 /**
  * Connect to wire db
- * Connection settings need to be added to settings.php as $databases['default']['wire']
+ * Connection settings need to be added to settings.php as
+ * $databases['default']['wire']
  * @return \PDO
  */
 function _etype_wire_connect() {
