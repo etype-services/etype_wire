@@ -177,16 +177,16 @@ function etype_wire_site_admin() {
   $form['connection']['etype_wire_user'] = array(
     '#type' => 'textfield',
     '#title' => t('MySQL User'),
-    '#default_value' => variable_get('etype_wire_user'),
+    '#default_value' => variable_get('etype_wire_user', 'wireZmuP'),
     '#size' => 25,
     '#maxlength' => 30,
     '#description' => t('User for connection.'),
   );
 
   $form['connection']['etype_wire_password'] = array(
-    '#type' => 'textfield',
+    '#type' => 'password',
     '#title' => t('MySQL Password'),
-    '#default_value' => variable_get('etype_wire_password'),
+    '#default_value' => variable_get('etype_wire_password', 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX'),
     '#size' => 25,
     '#maxlength' => 30,
     '#description' => t('Password for connection'),
