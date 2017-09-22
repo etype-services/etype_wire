@@ -149,49 +149,6 @@ function etype_wire_site_admin() {
     '#default_value' => $etype_wire_cluster_default,
   ];
 
-  $form['connection'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Connection'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-
-  $form['connection']['etype_wire_database'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Database Name'),
-    '#default_value' => variable_get('etype_wire_database', 'wire'),
-    '#size' => 25,
-    '#maxlength' => 30,
-    '#description' => t('The name of the database used for wire content.'),
-  );
-
-  $form['connection']['etype_wire_host'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Host Name'),
-    '#default_value' => variable_get('etype_wire_host', 'localhost'),
-    '#size' => 25,
-    '#maxlength' => 30,
-    '#description' => t('The name of the host used for wire content.'),
-  );
-
-  $form['connection']['etype_wire_user'] = array(
-    '#type' => 'textfield',
-    '#title' => t('MySQL User'),
-    '#default_value' => variable_get('etype_wire_user', 'wireZmuP'),
-    '#size' => 25,
-    '#maxlength' => 30,
-    '#description' => t('User for connection.'),
-  );
-
-  $form['connection']['etype_wire_password'] = array(
-    '#type' => 'textfield',
-    '#title' => t('MySQL Password'),
-    '#default_value' => variable_get('etype_wire_password', 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX'),
-    '#size' => 40,
-    '#maxlength' => 55,
-    '#description' => t('Password for connection'),
-  );
-
   return system_settings_form($form);
 }
 
