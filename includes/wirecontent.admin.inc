@@ -187,8 +187,8 @@ function etype_wire_site_admin() {
     '#type' => 'password',
     '#title' => t('MySQL Password'),
     '#default_value' => variable_get('etype_wire_password', 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX'),
-    '#size' => 25,
-    '#maxlength' => 30,
+    '#size' => 40,
+    '#maxlength' => 55,
     '#description' => t('Password for connection'),
   );
 
