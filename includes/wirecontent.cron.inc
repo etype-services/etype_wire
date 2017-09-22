@@ -42,10 +42,12 @@ function etype_wire_node_export() {
     $stmt->execute();
 
     foreach ($nodes as $node) {
+
       $object = node_load($node['nid']);
       $wrapper = entity_metadata_wrapper('node', $object);
 
-      echo $node->title . "\r<br />";
+      echo $node['title'] . "\r<br />";
+      echo $wrapper->title->value() . "\r<br />";
 
       $body = $wrapper->body->value();
       $safe_body = $body['value'];
