@@ -135,18 +135,19 @@ function etype_wire_theme() {
 
 /**
  * Connect to wire db
- * Settings need to be added to settings.php
+ * Connection settings need to be added to settings.php as $databases['default']['wire']
  * @return \PDO
  */
 function _etype_wire_connect() {
-  global $databases;
-  var_dump($databases['default']['wire']);
 
-  $password = 'ZmuPPmsR8lxkLLsXPFMgC1*&RzdJiJ21mX';
-  $user = 'wireZmuP';
+  global $databases;
+  $password = $databases['default']['wire']['password'];
+  $user = $databases['default']['wire']['username'];
+  $host = $databases['default']['wire']['host'];
+  $database = $databases['default']['wire']['database'];
 
   try {
-    $dbHandle = new PDO("mysql:host=localhost;dbname=wire;charset=utf8",
+    $dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=utf8",
       $user, $password);
     $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     // always disable emulated prepared statement when using the MySQL driver
