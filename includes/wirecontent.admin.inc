@@ -136,6 +136,7 @@ function etype_wire_site_admin() {
   $form['cluster'] = array(
     '#type' => 'fieldset',
     '#title' => t('Cluster'),
+    '#collapsible' => TRUE,
   );
 
   $form['cluster']['etype_wire_cluster'] = [
@@ -147,6 +148,40 @@ function etype_wire_site_admin() {
     '#options' => $etype_wire_cluster_options,
     '#default_value' => $etype_wire_cluster_default,
   ];
+
+  $form['connection'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Connection'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+
+  $form['connection']['etype_wire_database'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Database Name'),
+    '#default_value' => variable_get('etype_wire_database', 'wire'),
+    '#size' => 25,
+    '#maxlength' => 30,
+    '#description' => t('The name of the database used for wire content.'),
+  );
+
+  $form['connection']['etype_wire_host'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Host Name'),
+    '#default_value' => variable_get('etype_wire_host', 'localhost'),
+    '#size' => 25,
+    '#maxlength' => 30,
+    '#description' => t('The name of the host used for wire content.'),
+  );
+
+  $form['connection']['etype_wire_host'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Host Name'),
+    '#default_value' => variable_get('etype_wire_host', 'localhost'),
+    '#size' => 25,
+    '#maxlength' => 30,
+    '#description' => t('The name of the host used for wire content.'),
+  );
 
   return system_settings_form($form);
 }
