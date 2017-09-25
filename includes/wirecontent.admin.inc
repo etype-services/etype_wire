@@ -222,6 +222,7 @@ function etype_wire_global_admin() {
  * @param $form_state
  */
 function etype_wire_global_admin_submit($form, &$form_state) {
-  var_dump($form['cluster']['etype_wire_cluster_setup']);
+  var_dump($form['cluster']['etype_wire_cluster_setup']["#value"]);
+
   exit;
 }
