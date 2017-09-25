@@ -272,7 +272,7 @@ function etype_wire_global_admin_submit($form, &$form_state) {
 
   $sql = "UPDATE `settings` set `sections` = ?";
   $stmt = $dbHandle->prepare($sql);
-  $value = $form['section']['etype_wire_section_setup']["#value"];
+  $value = $form['sections']['etype_wire_section_setup']["#value"];
   $stmt->execute([$value]);
 
   // remove form value, do not need to store it
