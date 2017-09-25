@@ -226,7 +226,7 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $serialized = '';
   $arr = [];
   $string = $form['cluster']['etype_wire_cluster_setup']["#value"];
-  $split = preg_split("/\n/", $string,);
+  $split = preg_split("/\n/", $string);
   if (count($split) > 0)
   foreach($split as $item) {
     $tmp = explode("|", $item);
