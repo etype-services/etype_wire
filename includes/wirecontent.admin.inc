@@ -167,7 +167,7 @@ function etype_wire_site_admin() {
  * Global Settings for the Clusters
  * @return array
  */
-function etype_wire_global_admin_form() {
+function etype_wire_global_admin() {
 
   if (_etype_wire_check_connection() === false) {
 
@@ -210,10 +210,12 @@ function etype_wire_global_admin_form() {
       '#required' => true,
     );
 
+    $form['#submit'][] = 'etype_wire_global_admin_submit';
+
     return system_settings_form($form);
   }
 
-  function etype_wire_global_admin_form_submit($form, &$form_state) {
+  function etype_wire_global_admin_submit($form, &$form_state) {
     var_dump($form['cluster']['etype_wire_cluster_setup']);
     exit;
   }
