@@ -218,6 +218,7 @@ function etype_wire_global_admin() {
 }
 
 /**
+ * Make serialized array of option to store in wire database
  * @param $form
  * @param $form_state
  */
