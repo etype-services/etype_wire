@@ -110,10 +110,12 @@ function etype_wire_menu() {
  * @return mixed
  */
 function etype_wire_cronapi($op, $job = NULL) {
-  
+
+  $cron = variable_get('etype_wire_cron_setting', '1 * * * *');
+
   $items['etype_wire_cron'] = [
     'description' => 'Export Nodes to Wire Content',
-    'rule' => '1 * * * *',
+    'rule' => $cron,
     'callback' => 'etype_wire_node_export',
     'arguments' => ['all'],
     'file' => 'includes/wirecontent.cron.inc',

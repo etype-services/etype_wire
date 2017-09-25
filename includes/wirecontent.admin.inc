@@ -160,12 +160,12 @@ function etype_wire_site_admin() {
 
     $form['settings'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Settings'),
+      '#title' => t('Other Settings'),
       '#collapsible' => TRUE,
     );
 
     $form['settings']['etype_wire_cron_setting'] = [
-      '#title' => t('Cron Setting'),
+      '#title' => t('Cron'),
       '#description' => t("Enter a valid cron setting. The site will update content in the wire database on this schedule."),
       '#type' => 'textfield',
       '#default_value' => variable_get('etype_wire_cron_setting', '1 * * * *'),
