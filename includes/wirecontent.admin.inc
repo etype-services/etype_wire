@@ -187,7 +187,7 @@ function etype_wire_global_admin() {
     $res = $stmt->fetchAll();
     if (!empty($res[0]->data)) {
       foreach ($res[0]->data as $k => $v) {
-        $text .= "$k|$v\r";
+        $text .= "$k|$v\n";
       }
     }
     $form = [];
