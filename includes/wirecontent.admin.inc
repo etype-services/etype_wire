@@ -130,8 +130,8 @@ function etype_wire_site_admin() {
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
     $res = $stmt->fetchAll();
-    if (!empty($res[0]->data)) {
-      $etype_wire_cluster_options = unserialize($res[0]->data);
+    if (!empty($res[0]->cluster)) {
+      $etype_wire_cluster_options = unserialize($res[0]->cluster);
     } else {
       $etype_wire_cluster_options = array('main' => "Main");
     }
@@ -189,8 +189,8 @@ function etype_wire_global_admin() {
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
     $res = $stmt->fetchAll();
-    if (!empty($res[0]->data)) {
-      $etype_wire_cluster_options = unserialize($res[0]->data);
+    if (!empty($res[0]->cluster)) {
+      $etype_wire_cluster_options = unserialize($res[0]->cluster);
       foreach ($etype_wire_cluster_options as $k => $v) {
         $text .= "$k|$v\n";
       }
