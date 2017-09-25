@@ -51,12 +51,7 @@ function etype_wire_node_export() {
 
     global $base_url;
     $site_name = variable_get('site_name', 'Drupal');
-    $etype_wire_cluster = variable_get('etype_wire_cluster');
-
-    /* barf if cluster is not set up */
-    if (empty($etype_wire_cluster)) {
-      return;
-    }
+    $etype_wire_cluster = variable_get('etype_wire_cluster', ['main' => 'Main']);
     $cluster = implode($etype_wire_cluster, ',');
 
     /* Delete old nodes */
@@ -73,8 +68,7 @@ function etype_wire_node_export() {
 
       if (isset ($wrapper->field_kicker)) {
         $kicker = $wrapper->field_kicker->value();
-      }
-      else {
+      } else {
         $kicker = '';
       }
       $safe_kicker = strip_tags($kicker['safe_value']);
