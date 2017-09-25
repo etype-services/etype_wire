@@ -91,7 +91,7 @@ VALUES (
        " . $dbHandle->quote($safe_body) . ",
         '" . $file_path . "',
          '" . $safe_kicker . "',
-          " . $dbHandle->quote($safe_caption) . ",,
+          " . $dbHandle->quote($safe_caption) . ",
            '" . $node['uid'] . "',
             '0',
              '" . $node['created'] . "',
@@ -107,8 +107,8 @@ VALUES (
                        ?)";
 
       echo $sql ."\n\n";
-      $stmt = $dbHandle->prepare($sql);
-      var_dump($stmt);
+      // $stmt = $dbHandle->prepare($sql);
+      // var_dump($stmt);
       // echo "----------------------\n\n";
       try {
         $stmt->execute(["$base_url", "$site_name", "$cluster"]);
