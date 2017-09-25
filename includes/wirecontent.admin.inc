@@ -235,7 +235,7 @@ function etype_wire_global_admin() {
     $form['sections']['etype_wire_section_setup'] = array(
       '#type' => 'textfield',
       '#title' => t('Sections'),
-      '#description' => t('Article Section tags to match using regex when exporting nodes to the wire database. Separated by |.'),
+      '#description' => t('Article section tags to match using regex when exporting nodes to the wire database. Separated by |.'),
       '#default_value' => $res[0]->sections,
     );
 
