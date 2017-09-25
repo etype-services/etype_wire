@@ -40,6 +40,8 @@ function etype_wire_node_export() {
   $query->range(0, 10);
   $results = $query->execute();
 
+  var_dump($query);
+
   $nodes = [];
   while ($n = $results->fetchAssoc()) {
     $nodes[] = $n;
