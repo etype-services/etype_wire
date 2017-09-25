@@ -124,6 +124,9 @@ function etype_wire_site_admin() {
     return $form;
 
   } else {
+
+    $form = [];
+
     $dbHandle = _etype_wire_connect();
     $sql = "SELECT `cluster` FROM `settings`";
     $stmt = $dbHandle->prepare($sql);
@@ -131,32 +134,30 @@ function etype_wire_site_admin() {
     $stmt->setFetchMode(PDO::FETCH_OBJ);
     $res = $stmt->fetchAll();
     if (!empty($res[0]->cluster)) {
+
       $etype_wire_cluster_options = unserialize($res[0]->cluster);
-    } else {
-      $etype_wire_cluster_options = array('main' => "Main");
+
+      /* get current setting */
+      $etype_wire_cluster_default = variable_get('etype_wire_cluster',
+        $etype_wire_cluster_options[0]);
+
+      $form['cluster'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Cluster'),
+        '#collapsible' => TRUE,
+      );
+
+      $form['cluster']['etype_wire_cluster'] = [
+        '#title' => t('Site Cluster'),
+        '#multiple' => TRUE,
+        '#description' => t("The cluster that this site belongs to. Sites can belong to one or more clusters and will only show wire content from checked clusters."),
+        '#weight' => '1',
+        '#type' => 'checkboxes',
+        '#options' => $etype_wire_cluster_options,
+        '#default_value' => $etype_wire_cluster_default,
+      ];
+
     }
-
-    /* get current setting */
-    $etype_wire_cluster_default = variable_get('etype_wire_cluster',
-      $etype_wire_cluster_options[0]);
-
-    $form = [];
-
-    $form['cluster'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Cluster'),
-      '#collapsible' => TRUE,
-    );
-
-    $form['cluster']['etype_wire_cluster'] = [
-      '#title' => t('Site Cluster'),
-      '#multiple' => TRUE,
-      '#description' => t("The cluster that this site belongs to. Sites can belong to one or more clusters and will only show wire content from checked clusters."),
-      '#weight' => '1',
-      '#type' => 'checkboxes',
-      '#options' => $etype_wire_cluster_options,
-      '#default_value' => $etype_wire_cluster_default,
-    ];
 
     $form['settings'] = array(
       '#type' => 'fieldset',

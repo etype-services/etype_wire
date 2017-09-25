@@ -51,7 +51,7 @@ function etype_wire_node_export() {
 
     global $base_url;
     $site_name = variable_get('site_name', 'Drupal');
-    $etype_wire_cluster = variable_get('etype_wire_cluster', ['main' => 'Main']);
+    $etype_wire_cluster = variable_get('etype_wire_cluster');
     $cluster = implode($etype_wire_cluster, ',');
 
     /* Delete old nodes */
