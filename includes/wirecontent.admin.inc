@@ -225,13 +225,15 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $serialized = '';
   $arr = [];
   $string = $form['cluster']['etype_wire_cluster_setup']["#value"];
-  $split = preg_split("/\n/", $string,PREG_SPLIT_NO_EMPTY);
+  $split = preg_split("/\n/", $string,);
   if (count($split) > 0)
   foreach($split as $item) {
     $tmp = explode("|", $item);
     $machine_name = trim($tmp[0]);
-    $name = trim($tmp[1]);
-    $arr[$machine_name] = $name;
+    if (!empty($machine_name)) {
+      $name = trim($tmp[1]);
+      $arr[$machine_name] = $name;
+    }
   }
 
   var_dump($arr);
