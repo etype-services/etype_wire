@@ -126,11 +126,13 @@ function _etype_wire_check_connection() {
 function etype_wire_site_admin() {
 
   if (_etype_wire_check_connection() === false) {
+
     $form['intro'] = array(
       '#type' => 'item',
       '#title' => '',
       '#markup' => '<p>Please add wire database connection information to settings.php.</p>'
     );
+    return $form;
 
   } else {
     $dbHandle = _etype_wire_connect();
@@ -167,9 +169,8 @@ function etype_wire_site_admin() {
       '#default_value' => $etype_wire_cluster_default,
     ];
 
+    return system_settings_form($form);
   }
-
-  return system_settings_form($form);
 }
 
 
