@@ -197,10 +197,11 @@ function etype_wire_global_admin() {
     $text = '';
 
     $dbHandle = _etype_wire_connect();
-    $sql = "SELECT `cluster` FROM `settings`";
+    $sql = "SELECT `cluster`, `sections` FROM `settings`";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
+
     $res = $stmt->fetchAll();
     if (!empty($res[0]->cluster)) {
       $etype_wire_cluster_options = unserialize($res[0]->cluster);
@@ -221,6 +222,19 @@ function etype_wire_global_admin() {
       '#description' => t('Add or remove cluster options for all sites. Options should be on one line, with machine_name and name separated by |.'),
       '#default_value' => $text,
       '#required' => true,
+    );
+
+    $form['section'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Cluster'),
+      '#collapsible' => TRUE,
+    );
+
+    $form['sections']['etype_wire_section_setup'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Sections'),
+      '#description' => t('Article Section tags to match using regex when exporting nodes to the wire database. Separated by |.'),
+      '#default_value' => $res[0]->sections,
     );
 
     $form['#submit'][] = 'etype_wire_global_admin_submit';
