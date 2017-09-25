@@ -205,11 +205,16 @@ function etype_wire_global_admin() {
     $form['cluster']['etype_wire_cluster_setup'] = array(
       '#type' => 'textarea',
       '#title' => t('Cluster Options'),
+      '#description' => t('Add or remove Cluster options for all sites.'),
       '#default_value' => $text,
       '#required' => true,
     );
 
     return system_settings_form($form);
+  }
+
+  function etype_wire_global_admin_submit($form, &$form_state) {
+    var_dump($form['cluster']['etype_wire_cluster_setup']);
   }
 
 }
