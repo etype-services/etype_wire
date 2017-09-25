@@ -169,8 +169,6 @@ function etype_wire_site_admin() {
  */
 function etype_wire_global_admin() {
 
-
-  echo 'test';
   if (_etype_wire_check_connection() === false) {
 
     $form['intro'] = [

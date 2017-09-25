@@ -96,6 +96,7 @@ function etype_wire_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => ['etype_wire_global_admin'],
     'access arguments' => ['administer wire content'],
+    'weight' => -12,
   );
 
 
