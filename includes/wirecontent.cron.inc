@@ -60,9 +60,9 @@ function etype_wire_node_export() {
     $cluster = implode($etype_wire_cluster, ',');
 
     /* Delete old nodes */
-    $sql = "DELETE FROM node WHERE `site` = '$base_url'";
+    $sql = "DELETE FROM node WHERE `site_name` = ?";
     $stmt = $dbHandle->prepare($sql);
-    $stmt->execute();
+    $stmt->execute([$site_name]);
 
     foreach ($nodes as $node) {
       $object = node_load($node['nid']);
