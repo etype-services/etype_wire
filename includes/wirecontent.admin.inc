@@ -177,7 +177,27 @@ function etype_wire_global_admin() {
 
   } else {
 
+    $text = '';
+
+    $dbHandle = _etype_wire_connect();
+    $sql = "SELECT data FROM `cluster`";
+    $stmt = $dbHandle->prepare($sql);
+    $stmt->execute();
+    $stmt->setFetchMode(PDO::FETCH_OBJ);
+    $res = $stmt->fetchAll();
+    if (!empty($res[0]->data)) {
+      foreach ($res[0]->data as $k => $v) {
+        $text .= "$k|$v\r";
+      }
+    }
     $form = [];
+
+    $form['options'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Street'),
+      '#default_value' => $text,
+      '#required' => true,
+    );
 
     return system_settings_form($form);
   }
