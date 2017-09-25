@@ -32,15 +32,13 @@ function etype_wire_node_export() {
   if (count($sections) > 0) {
     $db_or = db_or();
     foreach ($sections as $item) {
-      $db_or->condition('t.name', $item, 'REGEXP');
+      $db_or->condition('t.name', trim($item), 'REGEXP');
     }
     $query->condition($db_or);
   }
   $query->orderBy('n.changed', 'DESC');
   $query->range(0, 10);
   $results = $query->execute();
-
-  var_dump($query);
 
   $nodes = [];
   while ($n = $results->fetchAssoc()) {
