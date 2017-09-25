@@ -125,7 +125,7 @@ function etype_wire_site_admin() {
 
   } else {
     $dbHandle = _etype_wire_connect();
-    $sql = "SELECT data FROM `cluster`";
+    $sql = "SELECT `cluster` FROM `settings`";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
@@ -184,7 +184,7 @@ function etype_wire_global_admin() {
     $text = '';
 
     $dbHandle = _etype_wire_connect();
-    $sql = "SELECT data FROM `cluster`";
+    $sql = "SELECT `cluster` FROM `settings`";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
@@ -223,7 +223,7 @@ function etype_wire_global_admin() {
  * @param $form_state
  */
 function etype_wire_global_admin_submit($form, &$form_state) {
-  $serialized = '';
+
   $arr = [];
   $string = $form['cluster']['etype_wire_cluster_setup']["#value"];
   $split = preg_split("/\n/", $string);
@@ -237,7 +237,10 @@ function etype_wire_global_admin_submit($form, &$form_state) {
     }
   }
 
-  var_dump($arr);
+  $serialized = serialize($arr);
+  $dbHandle = _etype_wire_connect();
+  $sql = "UPDATE `settings` set `cluster` = ?";
+  $stmt = $dbHandle->prepare($sql);
+  $stmt->execute($serialized);
 
-  exit;
 }
