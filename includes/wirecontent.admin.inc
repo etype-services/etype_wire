@@ -214,6 +214,7 @@ function etype_wire_global_admin() {
       '#type' => 'fieldset',
       '#title' => t('Cluster'),
       '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
     );
 
     $form['cluster']['etype_wire_cluster_setup'] = array(
@@ -228,6 +229,7 @@ function etype_wire_global_admin() {
       '#type' => 'fieldset',
       '#title' => t('Section Tags'),
       '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
     );
 
     $form['sections']['etype_wire_section_setup'] = array(
