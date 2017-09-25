@@ -190,7 +190,8 @@ function etype_wire_global_admin() {
     $stmt->setFetchMode(PDO::FETCH_OBJ);
     $res = $stmt->fetchAll();
     if (!empty($res[0]->data)) {
-      foreach ($res[0]->data as $k => $v) {
+      $etype_wire_cluster_options = unserialize($res[0]->data);
+      foreach ($etype_wire_cluster_options as $k => $v) {
         $text .= "$k|$v\n";
       }
     }
