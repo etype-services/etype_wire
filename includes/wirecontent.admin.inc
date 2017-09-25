@@ -163,7 +163,10 @@ function etype_wire_site_admin() {
 }
 
 
-/* admin site settings form */
+/**
+ * Global Settings for the Clusters
+ * @return array
+ */
 function etype_wire_global_admin() {
 
   if (_etype_wire_check_connection() === false) {
@@ -177,6 +180,7 @@ function etype_wire_global_admin() {
 
   } else {
 
+    $form = [];
     $text = '';
 
     $dbHandle = _etype_wire_connect();
@@ -191,9 +195,13 @@ function etype_wire_global_admin() {
       }
     }
 
-    $form = [];
+    $form['cluster'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Cluster'),
+      '#collapsible' => TRUE,
+    );
 
-    $form['etype_wire_cluster_setup'] = array(
+    $form['cluster']['etype_wire_cluster_setup'] = array(
       '#type' => 'textarea',
       '#title' => t('Cluster Options'),
       '#default_value' => $text,
