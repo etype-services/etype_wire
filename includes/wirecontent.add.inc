@@ -59,6 +59,7 @@ function etype_wire_node_add($nid) {
   $entity->language(LANGUAGE_NONE);
 
   if (!empty($old_node->file)) {
+
     $old_file_path = $old_node->file;
 
     // system_retrieve_file does not set path correctly, so needs to be set explicitly
@@ -73,8 +74,7 @@ function etype_wire_node_add($nid) {
     ];
     $file = file_save($file);
     $entity->field_image->set([(array) $file]);
-  }
-  else {
+  } else {
     $entity->field_image->set([]);
   }
 

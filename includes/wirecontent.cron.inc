@@ -112,17 +112,10 @@ VALUES (
                       ?,
                        ?)";
 
-      // echo $sql ."\n\n";
       $stmt = $dbHandle->prepare($sql);
-      // var_dump($stmt);
-      // echo "----------------------\n\n";
       try {
         $stmt->execute(["$base_url", "$site_name", "$cluster"]);
       } catch (Exception $e) {
-        // var_dump($stmt);
-        // var_dump($safe_body);
-        // echo "There was an error inserting the data";
-        // exit;
         watchdog('etype_wire', "There was an error inserting the data for $base_url.",
           [], WATCHDOG_ERROR);
       }
