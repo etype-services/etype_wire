@@ -10,21 +10,33 @@ function etype_wire_node_export() {
     return;
   }
 
+  $sections = [];
+  $dbHandle = _etype_wire_connect();
+  $sql = "SELECT `sections` FROM `settings`";
+  $stmt = $dbHandle->prepare($sql);
+  $stmt->execute();
+  $stmt->setFetchMode(PDO::FETCH_OBJ);
+  $res = $stmt->fetchAll();
+  if (!empty($res[0]->sections)) {
+    $sections = explode("|", $res[0]->sections);
+  }
+
   /* get last 10 published nodes from this site */
   $query = db_select('node', 'n');
   $query->distinct();
   $query->join('field_data_field_section', 'f', 'n.nid = f.entity_id');
   $query->join('taxonomy_term_data', 't', 'f.field_section_tid = t.tid');
-  $db_or = db_or();
-  $db_or->condition('t.name', 'news', 'REGEXP');
-  $db_or->condition('t.name', 'sports', 'REGEXP');
-  $db_or->condition('t.name', 'free', 'REGEXP');
-  $db_or->condition('t.name', 'unwind', 'REGEXP');
   $query->fields('n');
   $query->condition('n.type', 'article');
   $query->condition('n.status', '1');
-  $query->condition($db_or);
-  $query->orderBy('n.created', 'DESC');
+  if (count($sections) > 0) {
+    $db_or = db_or();
+    foreach ($sections as $item) {
+      $db_or->condition('t.name', $item, 'REGEXP');
+    }
+    $query->condition($db_or);
+  }
+  $query->orderBy('n.changed', 'DESC');
   $query->range(0, 10);
   $results = $query->execute();
 
