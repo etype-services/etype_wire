@@ -76,16 +76,16 @@ function etype_wire_menu() {
   $items['admin/config/etype_wire/settings'] = [
     'title' => 'Wire Content',
     'description' => 'Wire content options.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => ['etype_wire_site_admin'],
-    'access arguments' => ['administer wire content'],
-    'file' => 'includes/wirecontent.admin.inc',
     'type' => MENU_NORMAL_ITEM,
   ];
 
 
   $items['admin/config/etype_wire/settings/site'] = [
     'title' => 'Site',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['etype_wire_site_admin'],
+    'access arguments' => ['administer wire content'],
+    'file' => 'includes/wirecontent.admin.inc',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10,
   ];
