@@ -192,7 +192,7 @@ function etype_wire_global_admin() {
     }
     $form = [];
 
-    $form['options'] = array(
+    $form['cluster_options'] = array(
       '#type' => 'textarea',
       '#title' => t('Street'),
       '#default_value' => $text,
