@@ -112,42 +112,62 @@ function theme_wire_admin_content($variables) {
 }
 
 
+function _etype_wire_check_connection() {
+  global $databases;
+  if (empty ($databases['default']['wire']['database'] || !isset
+    ($databases['default']['wire']['database']))) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 /* admin site settings form */
 function etype_wire_site_admin() {
 
-  $dbHandle = _etype_wire_connect();
-  $sql = "SELECT data FROM `cluster`";
-  $stmt = $dbHandle->prepare($sql);
-  $stmt->execute();
-  $stmt->setFetchMode(PDO::FETCH_OBJ);
-  $res = $stmt->fetchAll();
-  if (!empty($res[0]->data)) {
-    $etype_wire_cluster_options = unserialize($res[0]->data);
+  if (_etype_wire_check_connection() === false) {
+    $form['intro'] = array(
+      '#type' => 'item',
+      '#title' => '',
+      '#markup' => '<p>Please add wire database connection information to settings.php.</p>'
+    );
+
   } else {
-    $etype_wire_cluster_options = array('main' => "Main");
+    $dbHandle = _etype_wire_connect();
+    $sql = "SELECT data FROM `cluster`";
+    $stmt = $dbHandle->prepare($sql);
+    $stmt->execute();
+    $stmt->setFetchMode(PDO::FETCH_OBJ);
+    $res = $stmt->fetchAll();
+    if (!empty($res[0]->data)) {
+      $etype_wire_cluster_options = unserialize($res[0]->data);
+    } else {
+      $etype_wire_cluster_options = array('main' => "Main");
+    }
+
+    /* get current setting */
+    $etype_wire_cluster_default = variable_get('etype_wire_cluster',
+      $etype_wire_cluster_options[0]);
+
+    $form = [];
+
+    $form['cluster'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Cluster'),
+      '#collapsible' => TRUE,
+    );
+
+    $form['cluster']['etype_wire_cluster'] = [
+      '#title' => t('Site Cluster'),
+      '#multiple' => TRUE,
+      '#description' => t("The cluster that this site belongs to. Sites can belong to one or more clusters and will only show wire content from checked clusters."),
+      '#weight' => '1',
+      '#type' => 'checkboxes',
+      '#options' => $etype_wire_cluster_options,
+      '#default_value' => $etype_wire_cluster_default,
+    ];
+
   }
-
-  /* get current setting */
-  $etype_wire_cluster_default = variable_get('etype_wire_cluster',
-    $etype_wire_cluster_options[0]);
-
-  $form = [];
-
-  $form['cluster'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Cluster'),
-    '#collapsible' => TRUE,
-  );
-
-  $form['cluster']['etype_wire_cluster'] = [
-    '#title' => t('Site Cluster'),
-    '#multiple' => TRUE,
-    '#description' => t("The cluster that this site belongs to. Sites can belong to one or more clusters and will only show wire content from checked clusters."),
-    '#weight' => '1',
-    '#type' => 'checkboxes',
-    '#options' => $etype_wire_cluster_options,
-    '#default_value' => $etype_wire_cluster_default,
-  ];
 
   return system_settings_form($form);
 }

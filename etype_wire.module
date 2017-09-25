@@ -142,25 +142,20 @@ function etype_wire_theme() {
 function _etype_wire_connect() {
 
   global $databases;
-  if ( ! isset($databases['default']['wire'])) {
-    echo "Please add wire database connection information to settings.php.";
-  } else {
-    $password = $databases['default']['wire']['password'];
-    $user = $databases['default']['wire']['username'];
-    $host = $databases['default']['wire']['host'];
-    $database = $databases['default']['wire']['database'];
+  $password = $databases['default']['wire']['password'];
+  $user = $databases['default']['wire']['username'];
+  $host = $databases['default']['wire']['host'];
+  $database = $databases['default']['wire']['database'];
 
-    try {
-      $dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=utf8",
-        $user, $password);
-      $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      // always disable emulated prepared statement when using the MySQL driver
-      $dbHandle->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
-    } catch (Exception $e) {
-      echo "There was an error connecting to the database";
-    }
-
-    return $dbHandle;
-
+  try {
+    $dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=utf8",
+      $user, $password);
+    $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // always disable emulated prepared statement when using the MySQL driver
+    $dbHandle->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
+  } catch (Exception $e) {
+    echo "There was an error connecting to the database";
   }
+
+  return $dbHandle;
 }
