@@ -241,7 +241,7 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $dbHandle = _etype_wire_connect();
   $sql = "UPDATE `settings` set `cluster` = ?";
   $stmt = $dbHandle->prepare($sql);
-  $stmt->execute($serialized);
+  $stmt->execute([$serialized]);
 
   echo $serialized;
   exit;
