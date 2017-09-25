@@ -110,6 +110,7 @@ function etype_wire_menu() {
  * @return mixed
  */
 function etype_wire_cronapi($op, $job = NULL) {
+  
   $items['etype_wire_cron'] = [
     'description' => 'Export Nodes to Wire Content',
     'rule' => '1 * * * *',
