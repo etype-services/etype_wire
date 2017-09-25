@@ -5,6 +5,11 @@
  */
 function etype_wire_node_export() {
 
+  /* check connection */
+  if (_etype_wire_check_connection() === false) {
+    return;
+  }
+
   /* get last 10 published nodes from this site */
   $query = db_select('node', 'n');
   $query->distinct();

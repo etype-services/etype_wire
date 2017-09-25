@@ -177,7 +177,20 @@ function etype_wire_site_admin() {
 /* admin site settings form */
 function etype_wire_global_admin() {
 
-  $form = [];
+  if (_etype_wire_check_connection() === false) {
 
-  return system_settings_form($form);
+    $form['intro'] = [
+      '#type' => 'item',
+      '#title' => '',
+      '#markup' => '<p>Please add wire database connection information to settings.php.</p>'
+    ];
+    return $form;
+
+  } else {
+
+    $form = [];
+
+    return system_settings_form($form);
+  }
+
 }
