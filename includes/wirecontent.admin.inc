@@ -190,11 +190,12 @@ function etype_wire_global_admin() {
         $text .= "$k|$v\n";
       }
     }
+
     $form = [];
 
-    $form['cluster_options'] = array(
+    $form['etype_wire_cluster_setup'] = array(
       '#type' => 'textarea',
-      '#title' => t('Street'),
+      '#title' => t('Cluster Options'),
       '#default_value' => $text,
       '#required' => true,
     );
