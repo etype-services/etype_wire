@@ -215,9 +215,13 @@ function etype_wire_global_admin() {
     return system_settings_form($form);
   }
 
-  function etype_wire_global_admin_submit($form, &$form_state) {
-    var_dump($form['cluster']['etype_wire_cluster_setup']);
-    exit;
-  }
+}
 
+/**
+ * @param $form
+ * @param $form_state
+ */
+function etype_wire_global_admin_submit($form, &$form_state) {
+  var_dump($form['cluster']['etype_wire_cluster_setup']);
+  exit;
 }
