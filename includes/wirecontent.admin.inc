@@ -205,7 +205,7 @@ function etype_wire_global_admin() {
     $form['cluster']['etype_wire_cluster_setup'] = array(
       '#type' => 'textarea',
       '#title' => t('Cluster Options'),
-      '#description' => t('Add or remove Cluster options for all sites.'),
+      '#description' => t('Add or remove Cluster options for all sites. Options should be on one line, with machine_name and name separated by |.'),
       '#default_value' => $text,
       '#required' => true,
     );
@@ -222,7 +222,17 @@ function etype_wire_global_admin() {
  * @param $form_state
  */
 function etype_wire_global_admin_submit($form, &$form_state) {
-  var_dump($form['cluster']['etype_wire_cluster_setup']["#value"]);
+  $serialized = '';
+  $arr = [];
+  $string = $form['cluster']['etype_wire_cluster_setup']["#value"];
+  $split = preg_split("/\n/", $string);
+  if (count($split) > 0)
+  foreach($split as $item) {
+    $tmp = explode("|", $item);
+    $arr[$tmp[0]] = $tmp[1];
+  }
+
+  var_dump($arr);
 
   exit;
 }
