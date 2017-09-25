@@ -159,3 +159,16 @@ function _etype_wire_connect() {
 
   return $dbHandle;
 }
+
+/**
+ * @return bool
+ */
+function _etype_wire_check_connection() {
+  global $databases;
+  if (empty ($databases['default']['wire']['database'] || !isset
+    ($databases['default']['wire']['database']))) {
+    return false;
+  } else {
+    return true;
+  }
+}

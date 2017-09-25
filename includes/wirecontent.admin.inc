@@ -111,17 +111,6 @@ function theme_wire_admin_content($variables) {
   return theme('table', ['header' => $header, 'rows' => $rows]);
 }
 
-
-function _etype_wire_check_connection() {
-  global $databases;
-  if (empty ($databases['default']['wire']['database'] || !isset
-    ($databases['default']['wire']['database']))) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
 /* admin site settings form */
 function etype_wire_site_admin() {
 
