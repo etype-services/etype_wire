@@ -94,7 +94,7 @@ function etype_wire_menu() {
     'title' => 'Global',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'drupal_get_form',
-    'page arguments' => ['etype_wire_global_admin'],
+    'page arguments' => ['etype_wire_global_admin_form'],
     'access arguments' => ['administer wire content'],
     'file' => 'includes/wirecontent.admin.inc',
   );
