@@ -231,7 +231,7 @@ function etype_wire_global_admin_submit($form, &$form_state) {
     $tmp = explode("|", $item);
     $machine_name = trim($tmp[0]);
     $name = trim($tmp[1]);
-    $arr[$machine_name] = $name);
+    $arr[$machine_name] = $name;
   }
 
   var_dump($arr);
