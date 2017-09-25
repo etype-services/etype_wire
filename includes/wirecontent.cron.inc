@@ -106,9 +106,9 @@ VALUES (
                       ?,
                        ?)";
 
-      // echo $sql ."\n\n";
+      echo $sql ."\n\n";
       $stmt = $dbHandle->prepare($sql);
-      // var_dump($stmt);
+      var_dump($stmt);
       // echo "----------------------\n\n";
       try {
         $stmt->execute(["$base_url", "$site_name", "$cluster"]);
