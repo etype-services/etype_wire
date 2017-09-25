@@ -224,9 +224,9 @@ function etype_wire_global_admin() {
       '#required' => true,
     );
 
-    $form['section'] = array(
+    $form['sections'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Cluster'),
+      '#title' => t('Section Tags'),
       '#collapsible' => TRUE,
     );
 
