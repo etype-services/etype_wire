@@ -137,10 +137,10 @@ function etype_wire_site_admin() {
     if (!empty($res[0]->cluster)) {
 
       $etype_wire_cluster_options = unserialize($res[0]->cluster);
-
+      $first_key = key($etype_wire_cluster_options);
       /* get current setting */
       $etype_wire_cluster_default = variable_get('etype_wire_cluster',
-        $etype_wire_cluster_options[0]);
+        $etype_wire_cluster_options[$first_key]);
 
       $form['cluster'] = array(
         '#type' => 'fieldset',
