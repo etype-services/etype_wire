@@ -120,7 +120,6 @@ VALUES (
         print_r($dbHandle->errorInfo());
         watchdog('etype_wire', "There was an error inserting the data for $base_url.",
           [], WATCHDOG_ERROR);
-        exit;
       }
     }
 
