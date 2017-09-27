@@ -116,7 +116,7 @@ VALUES (
       $stmt = $dbHandle->prepare($sql);
       try {
         $stmt->execute(["$base_url", "$site_name", "$cluster"]);
-        echo 'Error occurred:'.implode(":",$this->pdo->errorInfo());
+        echo 'Error occurred:'.implode(":",$dbHandle->errorInfo());
       } catch (Exception $e) {
         var_dump($stmt);
         echo "\r\r\r";
