@@ -112,14 +112,15 @@ VALUES (
                       ?,
                        ?)";
 
-      $dbHandle->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
+      $dbHandle->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
       $stmt = $dbHandle->prepare($sql);
       try {
         $stmt->execute(["$base_url", "$site_name", "$cluster"]);
         echo 'Error occurred:'.implode(":",$dbHandle->errorInfo());
       } catch (Exception $e) {
-        var_dump($stmt);
-        echo "\r\r\r";
+        print_r($stmt->errorInfo());
+        $error = $stmt->errorInfo();
+        die ("Error: (".$error[0].':'.$error[1].') '.$error[2]);
 
         watchdog('etype_wire', "There was an error inserting the data for $base_url.",
           [], WATCHDOG_ERROR);
