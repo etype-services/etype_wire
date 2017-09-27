@@ -112,7 +112,7 @@ VALUES (
                       ?,
                        ?)";
 
-      $dbHandle->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+      // $dbHandle->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
       $stmt = $dbHandle->prepare($sql);
       try {
         $stmt->execute(["$base_url", "$site_name", "$cluster"]);
