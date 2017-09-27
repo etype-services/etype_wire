@@ -128,6 +128,4 @@ VALUES (
 
   }
 
-  exit;
-
 }
