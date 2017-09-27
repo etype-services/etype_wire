@@ -8,7 +8,7 @@ require_once('Encoding.php');
 
 use \ForceUTF8\Encoding;  // It's namespaced now.
 
-function etype_wire_node_add($nid) {
+function etype_wire_node_add($nid, $site_name) {
 
   /* some basic error testing */
   if (!isset($nid)) {
@@ -20,8 +20,9 @@ function etype_wire_node_add($nid) {
   /* connect to wire db and get desired node */
   $dbHandle = _etype_wire_connect();
 
-  function get_all($dbHandle, $nid) {
-    $sql = "SELECT * FROM node WHERE nid = $nid";
+  function get_all($dbHandle, $nid, $site_name) {
+    $fixed_site_name = urldecode($site_name);
+    $sql = "SELECT * FROM `node` WHERE `nid` = $nid AND `site_name` = \"$fixed_site_name\"";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
@@ -29,7 +30,7 @@ function etype_wire_node_add($nid) {
     return $result;
   }
 
-  $nodes = get_all($dbHandle, $nid);
+  $nodes = get_all($dbHandle, $nid, $site_name);
 
   if (count($nodes) == 0) {
     drupal_set_message(t('Unable to continue, no nodes available'), 'error');

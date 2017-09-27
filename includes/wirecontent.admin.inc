@@ -83,7 +83,7 @@ function theme_wire_admin_content($variables) {
 
   $nodes = $variables['wire_nodes'];
 
-  /* sortable header - though the fields do not work */
+  /* sortable header */
   $header = [
     t('Title'),
     ['data' => t('Paper'), 'field' => 'site_name'],
@@ -97,7 +97,8 @@ function theme_wire_admin_content($variables) {
       l($node->title, $node->site . '/node/' . $node->nid, ["target" => "_blank"]),
       $node->site_name,
       format_date($node->created),
-      l(t('Add'), 'admin/wirecontent/' . $node->nid . '/add'),
+      l(t('Add'), 'admin/wirecontent/' . $node->nid . '/' .
+        urlencode($node->site_name) . '/add'),
     ];
   }
 

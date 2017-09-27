@@ -39,11 +39,11 @@ function etype_wire_menu() {
   ];
 
   /* to add wire content to site */
-  $items['admin/wirecontent/%/add'] = [
+  $items['admin/wirecontent/%/%/add'] = [
     'title' => 'Add Wire Content',
     'description' => "Add content from other sites to this one.",
     'page callback' => 'etype_wire_node_add',
-    'page arguments' => [2],
+    'page arguments' => [2,3],
     'access arguments' => ['access wire content'],
     'type' => MENU_CALLBACK,
     'file' => 'includes/wirecontent.add.inc',
