@@ -113,6 +113,7 @@ VALUES (
                        ?)";
 
       $stmt = $dbHandle->prepare($sql);
+      print_r($sql . "\r\r");
       try {
         $stmt->execute(["$base_url", "$site_name", "$cluster"]);
       } catch (Exception $e) {
