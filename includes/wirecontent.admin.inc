@@ -10,8 +10,6 @@
  * Menu callback for admin/content/wirecontent. Displays all Wire Content on
  * the site.
  *
- * @param string $order
- *
  * @return string
  */
 function etype_wire_admin_content() {
@@ -25,15 +23,17 @@ function etype_wire_admin_content() {
   /* cluster */
   $string = '';
   $etype_wire_cluster = variable_get('etype_wire_cluster');
-  $tmp = [];
-  foreach ($etype_wire_cluster as $k => $v) {
-    if (strlen($v) > 1) {
-      $tmp[] = " cluster REGEXP '$v' ";
+  if (!empty ($etype_wire_cluster)) {
+    $tmp = [];
+    foreach ($etype_wire_cluster as $k => $v) {
+      if (strlen($v) > 1) {
+        $tmp[] = " cluster REGEXP '$v' ";
+      }
     }
-  }
-  if (count($tmp) > 0) {
-    $string = implode($tmp, ' OR ');
-    $string = ' AND ( ' . $string . ' ) ';
+    if (count($tmp) > 0) {
+      $string = implode($tmp, ' OR ');
+      $string = ' AND ( ' . $string . ' ) ';
+    }
   }
 
   /* sorting */
@@ -78,10 +78,6 @@ ORDER BY $order $sort
 
 /**
  * Generate a list of all wire content available on this site.
- *
- * @param $variables
- *
- * @return string
  */
 function theme_wire_admin_content($variables) {
 
@@ -101,7 +97,8 @@ function theme_wire_admin_content($variables) {
       l($node->title, $node->site . '/node/' . $node->nid, ["target" => "_blank"]),
       $node->site_name,
       format_date($node->created),
-      l(t('Add'), 'admin/wirecontent/' . $node->nid . '/add'),
+      l(t('Add'), 'admin/wirecontent/' . $node->nid . '/' .
+        urlencode($node->site_name) . '/add'),
     ];
   }
 
@@ -115,34 +112,175 @@ function theme_wire_admin_content($variables) {
   return theme('table', ['header' => $header, 'rows' => $rows]);
 }
 
+/* admin site settings form */
+function etype_wire_site_admin() {
+
+  if (_etype_wire_check_connection() === false) {
+
+    $form['intro'] = array(
+      '#type' => 'item',
+      '#title' => '',
+      '#markup' => '<p>Please add wire database connection information to settings.php.</p>'
+    );
+    return $form;
+
+  } else {
+
+    $form = [];
+
+    $dbHandle = _etype_wire_connect();
+    $sql = "SELECT `cluster` FROM `settings`";
+    $stmt = $dbHandle->prepare($sql);
+    $stmt->execute();
+    $stmt->setFetchMode(PDO::FETCH_OBJ);
+    $res = $stmt->fetchAll();
+    if (!empty($res[0]->cluster)) {
+
+      $etype_wire_cluster_options = unserialize($res[0]->cluster);
+
+      /* get current setting */
+      $etype_wire_cluster_default = variable_get('etype_wire_cluster',
+        $etype_wire_cluster_options[0]);
+
+      $form['cluster'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Cluster'),
+        '#collapsible' => TRUE,
+      );
+
+      $form['cluster']['etype_wire_cluster'] = [
+        '#title' => t('Site Cluster'),
+        '#multiple' => TRUE,
+        '#description' => t("The cluster that this site belongs to. Sites can belong to one or more clusters and will only show wire content from checked clusters."),
+        '#weight' => '1',
+        '#type' => 'checkboxes',
+        '#options' => $etype_wire_cluster_options,
+        '#default_value' => $etype_wire_cluster_default,
+      ];
+
+    }
+
+    $form['settings'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Other Settings'),
+      '#collapsible' => TRUE,
+    );
+
+    $form['settings']['etype_wire_cron_setting'] = [
+      '#title' => t('Cron'),
+      '#description' => t("Enter a valid cron setting. The site will update content in the wire database on this schedule."),
+      '#type' => 'textfield',
+      '#default_value' => variable_get('etype_wire_cron_setting', '1 * * * *'),
+    ];
+
+    return system_settings_form($form);
+  }
+}
+
+
 /**
- * Admin settings form -- needs to be customized to each user
- * TODO set up clusters to be administered through config
- *
- * @return mixed
- *
+ * Global Settings for the Clusters
+ * @return array
  */
-function etype_wire_admin() {
+function etype_wire_global_admin() {
 
-  /* get current setting */
-  $etype_wire_cluster_default = variable_get('etype_wire_cluster', 'main');
+  if (_etype_wire_check_connection() === false) {
 
-  /* set cluster options */
-  $etype_wire_cluster_options = [
-    'main' => 'Main',
-  ];
+    $form['intro'] = [
+      '#type' => 'item',
+      '#title' => '',
+      '#markup' => '<p>Please add wire database connection information to settings.php.</p>'
+    ];
+    return $form;
 
-  $form = [];
+  } else {
 
-  $form['etype_wire_cluster'] = [
-    '#title' => t('Site Cluster'),
-    '#multiple' => TRUE,
-    '#description' => t("The cluster that this site belongs to."),
-    '#weight' => '1',
-    '#type' => 'checkboxes',
-    '#options' => $etype_wire_cluster_options,
-    '#default_value' => $etype_wire_cluster_default,
-  ];
+    $form = [];
+    $text = '';
 
-  return system_settings_form($form);
+    $dbHandle = _etype_wire_connect();
+    $sql = "SELECT `cluster`, `sections` FROM `settings`";
+    $stmt = $dbHandle->prepare($sql);
+    $stmt->execute();
+    $stmt->setFetchMode(PDO::FETCH_OBJ);
+
+    $res = $stmt->fetchAll();
+    if (!empty($res[0]->cluster)) {
+      $etype_wire_cluster_options = unserialize($res[0]->cluster);
+      foreach ($etype_wire_cluster_options as $k => $v) {
+        $text .= "$k|$v\n";
+      }
+    }
+
+    $form['cluster'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Cluster'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+
+    $form['cluster']['etype_wire_cluster_setup'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Cluster Options'),
+      '#description' => t('Add or remove cluster options for all sites. Options should be on one line, with machine_name and name separated by |.'),
+      '#default_value' => $text,
+      '#required' => true,
+    );
+
+    $form['sections'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Section Tags'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+
+    $form['sections']['etype_wire_section_setup'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Sections'),
+      '#description' => t('Article section tags to match using regex when exporting nodes to the wire database. Separated by |.'),
+      '#default_value' => $res[0]->sections,
+    );
+
+    $form['#submit'][] = 'etype_wire_global_admin_submit';
+
+    return system_settings_form($form);
+  }
+
+}
+
+/**
+ * Make serialized array of option to store in wire database
+ * @param $form
+ * @param $form_state
+ */
+function etype_wire_global_admin_submit($form, &$form_state) {
+
+  $arr = [];
+  $string = $form['cluster']['etype_wire_cluster_setup']["#value"];
+  $split = preg_split("/\n/", $string);
+  if (count($split) > 0)
+  foreach($split as $item) {
+    $tmp = explode("|", $item);
+    $machine_name = trim($tmp[0]);
+    if (!empty($machine_name)) {
+      $name = trim($tmp[1]);
+      $arr[$machine_name] = $name;
+    }
+  }
+
+  $serialized = serialize($arr);
+  $dbHandle = _etype_wire_connect();
+  $sql = "UPDATE `settings` set `cluster` = ?";
+  $stmt = $dbHandle->prepare($sql);
+  $stmt->execute([$serialized]);
+
+  $sql = "UPDATE `settings` set `sections` = ?";
+  $stmt = $dbHandle->prepare($sql);
+  $value = $form['sections']['etype_wire_section_setup']["#value"];
+  $stmt->execute([$value]);
+
+  // remove form value, do not need to store it
+  unset ($form['cluster']['etype_wire_cluster_setup']);
+  unset ($form['section']['etype_wire_section_setup']);
+
 }

@@ -2,10 +2,8 @@
 
 /**
  * @file
- * Wire functions for Etype Services to allow Editors to import and publish
- *   stories from other publications
+ * Wire functions for Etype Services to allow Editors to import and publish stories from other publications
  *
- * TODO: add install and uninstall functions
  */
 
 /**
@@ -15,6 +13,9 @@ function etype_wire_permission() {
   return [
     'access wire content' => [
       'title' => t('Access Wire Content'),
+    ],
+    'administer wire content' => [
+      'title' => t('Administer Wire Content'),
     ],
   ];
 }
@@ -38,11 +39,11 @@ function etype_wire_menu() {
   ];
 
   /* to add wire content to site */
-  $items['admin/wirecontent/%/add'] = [
+  $items['admin/wirecontent/%/%/add'] = [
     'title' => 'Add Wire Content',
     'description' => "Add content from other sites to this one.",
     'page callback' => 'etype_wire_node_add',
-    'page arguments' => [2],
+    'page arguments' => [2,3],
     'access arguments' => ['access wire content'],
     'type' => MENU_CALLBACK,
     'file' => 'includes/wirecontent.add.inc',
@@ -53,7 +54,7 @@ function etype_wire_menu() {
     'title' => 'Wire Content',
     'description' => "Run Wire cron job.",
     'page callback' => 'etype_wire_node_export',
-    'access arguments' => ['access wire content'],
+    'access arguments' => ['administer wire content'],
     'type' => MENU_CALLBACK,
     'file' => 'includes/wirecontent.cron.inc',
   ];
@@ -66,7 +67,7 @@ function etype_wire_menu() {
     'position' => 'right',
     'weight' => -15,
     'page callback' => 'system_admin_menu_block_page',
-    'access arguments' => ['administer site configuration'],
+    'access arguments' => ['administer wire content'],
     // Permission needed to view this area
     'file' => 'system.admin.inc',
     'file path' => drupal_get_path('module', 'system'),
@@ -76,11 +77,27 @@ function etype_wire_menu() {
     'title' => 'Wire Content',
     'description' => 'Wire content options.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => ['etype_wire_admin'],
-    'access arguments' => ['access wire content'],
+    'page arguments' => ['etype_wire_site_admin'],
+    'access arguments' => ['administer wire content'],
     'file' => 'includes/wirecontent.admin.inc',
     'type' => MENU_NORMAL_ITEM,
   ];
+
+
+  $items['admin/config/etype_wire/settings/site'] = [
+    'title' => 'Site',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  ];
+
+  $items['admin/config/etype_wire/settings/global'] = array(
+    'title' => 'Global',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['etype_wire_global_admin'],
+    'access arguments' => ['administer wire content'],
+    'file' => 'includes/wirecontent.admin.inc',
+  );
 
 
   return $items;
@@ -89,14 +106,16 @@ function etype_wire_menu() {
 /**
  * @param $op
  * @param null $job
- *
+ * Runs every hour at 1 minute past
  * @return mixed
  */
 function etype_wire_cronapi($op, $job = NULL) {
 
+  $cron = variable_get('etype_wire_cron_setting', '1 * * * *');
+
   $items['etype_wire_cron'] = [
     'description' => 'Export Nodes to Wire Content',
-    'rule' => '1 * * * *',
+    'rule' => $cron,
     'callback' => 'etype_wire_node_export',
     'arguments' => ['all'],
     'file' => 'includes/wirecontent.cron.inc',
@@ -120,19 +139,40 @@ function etype_wire_theme() {
 
 /**
  * Connect to wire db
- * needs set up for each customer
- *
+ * Connection settings need to be added to settings.php as
+ * $databases['default']['wire']
  * @return \PDO
  */
 function _etype_wire_connect() {
+
+  global $databases;
+  $password = $databases['default']['wire']['password'];
+  $user = $databases['default']['wire']['username'];
+  $host = $databases['default']['wire']['host'];
+  $database = $databases['default']['wire']['database'];
+
   try {
-    $dbHandle = new PDO("mysql:host=35.196.56.75;dbname=wire;charset=utf8", 'etype_wire', 'GeMay9k60gL1=2Q');
+    $dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=utf8",
+      $user, $password);
     $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     // always disable emulated prepared statement when using the MySQL driver
     $dbHandle->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
   } catch (Exception $e) {
-    watchdog('etype_wire', 'There was an error connecting to the database.',
-      [], WATCHDOG_ERROR);
+    echo "There was an error connecting to the database";
   }
+
   return $dbHandle;
+}
+
+/**
+ * @return bool
+ */
+function _etype_wire_check_connection() {
+  global $databases;
+  if (empty ($databases['default']['wire']['database'] || !isset
+    ($databases['default']['wire']['database']))) {
+    return false;
+  } else {
+    return true;
+  }
 }

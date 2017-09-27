@@ -1,21 +1,44 @@
 <?php
 
-require_once('Encoding.php');
-use \ForceUTF8\Encoding;  // It's namespaced now.
-
 /**
  * Export last 10 published nodes from site to concatenation db
  */
 function etype_wire_node_export() {
 
+  /* check connection */
+  if (_etype_wire_check_connection() === false) {
+    return;
+  }
+
+  $sections = [];
+  $dbHandle = _etype_wire_connect();
+  $sql = "SELECT `sections` FROM `settings`";
+  $stmt = $dbHandle->prepare($sql);
+  $stmt->execute();
+  $stmt->setFetchMode(PDO::FETCH_OBJ);
+  $res = $stmt->fetchAll();
+  if (!empty($res[0]->sections)) {
+    $sections = explode("|", $res[0]->sections);
+  }
+
   /* get last 10 published nodes from this site */
-  $results = db_select('node', 'n')
-    ->fields('n')
-    ->condition('type', 'article')
-    ->condition('status', '1')
-    ->orderBy('changed', 'DESC')
-    ->range(0, 10)
-    ->execute();
+  $query = db_select('node', 'n');
+  $query->distinct();
+  $query->join('field_data_field_section', 'f', 'n.nid = f.entity_id');
+  $query->join('taxonomy_term_data', 't', 'f.field_section_tid = t.tid');
+  $query->fields('n');
+  $query->condition('n.type', 'article');
+  $query->condition('n.status', '1');
+  if (count($sections) > 0) {
+    $db_or = db_or();
+    foreach ($sections as $item) {
+      $db_or->condition('t.name', trim($item), 'REGEXP');
+    }
+    $query->condition($db_or);
+  }
+  $query->orderBy('n.changed', 'DESC');
+  $query->range(0, 10);
+  $results = $query->execute();
 
   $nodes = [];
   while ($n = $results->fetchAssoc()) {
@@ -29,35 +52,26 @@ function etype_wire_node_export() {
     global $base_url;
     $site_name = variable_get('site_name', 'Drupal');
     $etype_wire_cluster = variable_get('etype_wire_cluster');
-
-    /* hack for if cluster is not set up */
-    if (empty($etype_wire_cluster)) {
-      $etype_wire_cluster = ['main' => 'main'];
-    }
     $cluster = implode($etype_wire_cluster, ',');
 
     /* Delete old nodes */
-    $sql = "DELETE FROM node WHERE `site_name` LIKE '$site_name'";
+    $sql = "DELETE FROM node WHERE `site_name` = ?";
     $stmt = $dbHandle->prepare($sql);
-    $stmt->execute();
+    $stmt->execute([$site_name]);
 
     foreach ($nodes as $node) {
-
       $object = node_load($node['nid']);
       $wrapper = entity_metadata_wrapper('node', $object);
 
-      echo $node['title'] . "\r<br />";
-      echo $wrapper->title->value() . "\r<br />";
-
       $body = $wrapper->body->value();
-      $safe_body = $body['value'];
+      $safe_body = $body['safe_value'];
 
       if (isset ($wrapper->field_kicker)) {
         $kicker = $wrapper->field_kicker->value();
+        $safe_kicker = strip_tags($kicker['safe_value']);
       } else {
-        $kicker = '';
+        $safe_kicker = '';
       }
-      $safe_kicker = strip_tags($kicker);
 
       $image_uri = isset($wrapper->field_image[0]->value()['uri']) ? $wrapper->field_image[0]->value()['uri'] : '';
       if (!empty($image_uri)) {
@@ -98,19 +112,22 @@ VALUES (
                       ?,
                        ?)";
 
-      // echo $sql ."\n\n";
+      // $dbHandle->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
       $stmt = $dbHandle->prepare($sql);
-      // var_dump($stmt);
-      // echo "----------------------\n\n";
       try {
         $stmt->execute(["$base_url", "$site_name", "$cluster"]);
+        //echo 'Error occurred:'.implode(":",$dbHandle->errorInfo());
       } catch (Exception $e) {
-        // var_dump($stmt);
-        // var_dump($safe_body);
-        echo "There was an error inserting the data";
+        //print_r($stmt->errorInfo());
+        //$error = $stmt->errorInfo();
+        //die ("Error: (".$error[0].':'.$error[1].') '.$error[2]);
         watchdog('etype_wire', "There was an error inserting the data for $base_url.",
           [], WATCHDOG_ERROR);
       }
     }
+
   }
+
+  exit;
+
 }

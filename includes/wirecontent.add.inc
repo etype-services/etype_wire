@@ -8,7 +8,7 @@ require_once('Encoding.php');
 
 use \ForceUTF8\Encoding;  // It's namespaced now.
 
-function etype_wire_node_add($nid) {
+function etype_wire_node_add($nid, $site_name) {
 
   /* some basic error testing */
   if (!isset($nid)) {
@@ -20,8 +20,9 @@ function etype_wire_node_add($nid) {
   /* connect to wire db and get desired node */
   $dbHandle = _etype_wire_connect();
 
-  function get_all($dbHandle, $nid) {
-    $sql = "SELECT * FROM node WHERE nid = $nid";
+  function get_all($dbHandle, $nid, $site_name) {
+    $fixed_site_name = urldecode($site_name);
+    $sql = "SELECT * FROM `node` WHERE `nid` = $nid AND `site_name` = \"$fixed_site_name\"";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
@@ -29,7 +30,7 @@ function etype_wire_node_add($nid) {
     return $result;
   }
 
-  $nodes = get_all($dbHandle, $nid);
+  $nodes = get_all($dbHandle, $nid, $site_name);
 
   if (count($nodes) == 0) {
     drupal_set_message(t('Unable to continue, no nodes available'), 'error');
@@ -50,16 +51,16 @@ function etype_wire_node_add($nid) {
 
   $entity = entity_metadata_wrapper($entity_type, $new_node);
   $entity->title->set($old_node->title);
-  $entity->body->set(['value' => check_plain($old_node->body)]);
 
-  // kicker does not work
-  //if (isset($entity->field_kicker)) {
-  //  $entity->field_kicker->set($old_node->kicker);
-  //}
+  /* body formatting */
+  $new_body = $old_node->body;
+  $new_body = Encoding::toUTF8($new_body);
+  $entity->body->set(['value' => $new_body]);
 
   $entity->language(LANGUAGE_NONE);
 
   if (!empty($old_node->file)) {
+
     $old_file_path = $old_node->file;
 
     // system_retrieve_file does not set path correctly, so needs to be set explicitly
@@ -74,8 +75,7 @@ function etype_wire_node_add($nid) {
     ];
     $file = file_save($file);
     $entity->field_image->set([(array) $file]);
-  }
-  else {
+  } else {
     $entity->field_image->set([]);
   }
 
