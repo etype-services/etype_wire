@@ -97,7 +97,8 @@ function theme_wire_admin_content($variables) {
       l($node->title, $node->site . '/node/' . $node->nid, ["target" => "_blank"]),
       $node->site_name,
       format_date($node->created),
-      l(t('Add'), 'admin/wirecontent/' . $node->nid . '/add'),
+      l(t('Add'), 'admin/wirecontent/' . $node->nid . '/' .
+        urlencode($node->site_name) . 'add'),
     ];
   }
 
