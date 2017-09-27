@@ -98,7 +98,7 @@ function theme_wire_admin_content($variables) {
       $node->site_name,
       format_date($node->created),
       l(t('Add'), 'admin/wirecontent/' . $node->nid . '/' .
-        urlencode($node->site_name) . 'add'),
+        urlencode($node->site_name) . '/add'),
     ];
   }
 
