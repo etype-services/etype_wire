@@ -116,6 +116,10 @@ VALUES (
       try {
         $stmt->execute(["$base_url", "$site_name", "$cluster"]);
       } catch (Exception $e) {
+        var_dump($stmt);
+        echo "\r\r\r";
+        throw new MyDatabaseException( $e>getMessage( ) , (int)
+        $e->getCode( ) );
         watchdog('etype_wire', "There was an error inserting the data for $base_url.",
           [], WATCHDOG_ERROR);
       }
