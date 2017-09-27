@@ -21,7 +21,8 @@ function etype_wire_node_add($nid, $site_name) {
   $dbHandle = _etype_wire_connect();
 
   function get_all($dbHandle, $nid, $site_name) {
-    $sql = "SELECT * FROM `node` WHERE `nid` = $nid AND `site_name` = \"$site_name\"";
+    $fixed_site_name = urldecode($site_name);
+    $sql = "SELECT * FROM `node` WHERE `nid` = $nid AND `site_name` = \"$fixed_site_name\"";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
