@@ -83,7 +83,7 @@ function theme_wire_admin_content($variables) {
 
   $nodes = $variables['wire_nodes'];
 
-  /* sortable header - though the fields do not work */
+  /* sortable header */
   $header = [
     t('Title'),
     ['data' => t('Paper'), 'field' => 'site_name'],
