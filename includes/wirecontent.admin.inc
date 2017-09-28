@@ -260,7 +260,7 @@ function etype_wire_global_admin() {
       '#type' => 'radios',
       '#title' => t('Body Text Format'),
       '#description' => t('Choose body export format.'),
-      '#default_value' => $format_options['html'],
+      '#default_value' => $data['format'],
       '#checked' => 'checked',
       '#options' =>  $format_options,
     );
