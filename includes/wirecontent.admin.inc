@@ -259,7 +259,8 @@ function etype_wire_global_admin() {
       '#title' => t('Body Text Format'),
       '#description' => t('Choose body export format.'),
       '#default_value' => $format_options[0],
-      '#options' =>  $format_options
+      '#checked' => 'checked',
+      '#options' =>  $format_options,
     );
 
     $form['#submit'][] = 'etype_wire_global_admin_submit';
