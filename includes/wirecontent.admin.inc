@@ -199,14 +199,16 @@ function etype_wire_global_admin() {
     $text = '';
 
     $dbHandle = _etype_wire_connect();
-    $sql = "SELECT `cluster`, `sections`, `data` FROM `settings`";
+    $sql = "SELECT `data` FROM `settings`";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
 
     $res = $stmt->fetchAll();
-    if (!empty($res[0]->cluster)) {
-      $etype_wire_cluster_options = unserialize($res[0]->cluster);
+    $data = unserialize($res[0]->data);
+
+    if (!empty($data['cluster'])) {
+      $etype_wire_cluster_options = $data['cluster'];
       foreach ($etype_wire_cluster_options as $k => $v) {
         $text .= "$k|$v\n";
       }
@@ -214,8 +216,8 @@ function etype_wire_global_admin() {
 
     /* Body export options */
     $format_options = [
-      0 => "HTML",
-      1 => "Plain",
+      'html' => "HTML",
+      'plain' => "Plain",
     ];
 
     $form['cluster'] = array(
@@ -244,7 +246,7 @@ function etype_wire_global_admin() {
       '#type' => 'textfield',
       '#title' => t('Sections'),
       '#description' => t('Article section tags to match using regex when exporting nodes to the wire database. Separated by |.'),
-      '#default_value' => $res[0]->sections,
+      '#default_value' => $data['sections'],
     );
 
     $form['settings'] = array(
@@ -258,7 +260,7 @@ function etype_wire_global_admin() {
       '#type' => 'radios',
       '#title' => t('Body Text Format'),
       '#description' => t('Choose body export format.'),
-      '#default_value' => $format_options[0],
+      '#default_value' => $format_options['html'],
       '#checked' => 'checked',
       '#options' =>  $format_options,
     );
