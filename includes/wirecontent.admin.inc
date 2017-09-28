@@ -141,7 +141,7 @@ function etype_wire_site_admin() {
 
     if (!empty($data['cluster'])) {
 
-      $etype_wire_cluster_options = unserialize($data['cluster']);
+      $etype_wire_cluster_options = $data['cluster'];
       $first_key = key($etype_wire_cluster_options);
       /* get current setting */
       $etype_wire_cluster_default = variable_get('etype_wire_cluster',
