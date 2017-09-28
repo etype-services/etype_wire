@@ -249,11 +249,11 @@ function etype_wire_global_admin() {
     );
 
     $form['settings']['etype_wire_text_format'] = array(
-      '#type' => 'checkboxes',
-      '#title' => t('Text Format'),
+      '#type' => 'radios',
+      '#title' => t('Body Text Format'),
       '#description' => t('Choose body export format.'),
-      '#default_value' => ['html'],
-      '#options' => ['plain', 'html']
+      '#default_value' => ['HTML'],
+      '#options' => ['Plain', 'HTML']
     );
 
     $form['#submit'][] = 'etype_wire_global_admin_submit';
