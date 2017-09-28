@@ -212,6 +212,12 @@ function etype_wire_global_admin() {
       }
     }
 
+    /* Body export options */
+    $format_options = [
+      0 => "HTML",
+      1 => "Plain",
+    ];
+
     $form['cluster'] = array(
       '#type' => 'fieldset',
       '#title' => t('Cluster'),
@@ -252,8 +258,8 @@ function etype_wire_global_admin() {
       '#type' => 'radios',
       '#title' => t('Body Text Format'),
       '#description' => t('Choose body export format.'),
-      '#default_value' => ['HTML'],
-      '#options' => ['Plain', 'HTML']
+      '#default_value' => $format_options[0],
+      '#options' =>  $format_options
     );
 
     $form['#submit'][] = 'etype_wire_global_admin_submit';
