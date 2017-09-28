@@ -252,7 +252,7 @@ function etype_wire_global_admin() {
       '#type' => 'checkboxes',
       '#title' => t('Text Format'),
       '#description' => t('Choose body export format.'),
-      '#default_value' => 'html',
+      '#default_value' => ['html'],
       '#options' => ['plain', 'html']
     );
 
