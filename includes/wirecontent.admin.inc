@@ -199,7 +199,7 @@ function etype_wire_global_admin() {
     $text = '';
 
     $dbHandle = _etype_wire_connect();
-    $sql = "SELECT `cluster`, `sections` FROM `settings`";
+    $sql = "SELECT `cluster`, `sections`, `data` FROM `settings`";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
@@ -241,6 +241,21 @@ function etype_wire_global_admin() {
       '#default_value' => $res[0]->sections,
     );
 
+    $form['settings'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Other Settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+
+    $form['settings']['etype_wire_text_format'] = array(
+      '#type' => 'checkboxes',
+      '#title' => t('Text Format'),
+      '#description' => t('Choose body export format.'),
+      '#default_value' => 'html',
+      '#options' => ['plain', 'html']
+    );
+
     $form['#submit'][] = 'etype_wire_global_admin_submit';
 
     return system_settings_form($form);
@@ -255,6 +270,7 @@ function etype_wire_global_admin() {
  */
 function etype_wire_global_admin_submit($form, &$form_state) {
 
+  $data = [];
   $arr = [];
   $string = $form['cluster']['etype_wire_cluster_setup']["#value"];
   $split = preg_split("/\n/", $string);
@@ -278,6 +294,15 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $stmt = $dbHandle->prepare($sql);
   $value = $form['sections']['etype_wire_section_setup']["#value"];
   $stmt->execute([$value]);
+
+  $data['cluster'] = $arr;
+  $data['sections'] = $form['sections']['etype_wire_section_setup']["#value"];
+  $data['format'] = $form['sections']['etype_wire_text_format']["#value"];
+  $serialized = serialize($data);
+  $dbHandle = _etype_wire_connect();
+  $sql = "UPDATE `settings` set `data` = ?";
+  $stmt = $dbHandle->prepare($sql);
+  $stmt->execute([$serialized]);
 
   // remove form value, do not need to store it
   unset ($form['cluster']['etype_wire_cluster_setup']);
