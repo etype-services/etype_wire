@@ -112,7 +112,10 @@ function theme_wire_admin_content($variables) {
   return theme('table', ['header' => $header, 'rows' => $rows]);
 }
 
-/* admin site settings form */
+/**
+ * @return array
+ * site settings form
+ */
 function etype_wire_site_admin() {
 
   if (_etype_wire_check_connection() === false) {
@@ -133,8 +136,6 @@ function etype_wire_site_admin() {
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
-    $res = $stmt->fetchAll();
-
     $res = $stmt->fetchAll();
     $data = unserialize($res[0]->data);
 
