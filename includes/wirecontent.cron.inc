@@ -54,6 +54,15 @@ function etype_wire_node_export() {
     $etype_wire_cluster = variable_get('etype_wire_cluster');
     $cluster = implode($etype_wire_cluster, ',');
 
+    /* Get global text setting */
+    $sql = "SELECT `data` FROM `settings`";
+    $stmt = $dbHandle->prepare($sql);
+    $stmt->execute();
+    $stmt->setFetchMode(PDO::FETCH_OBJ);
+    $res = $stmt->fetchAll();
+    $data = unserialize($res[0]->data);
+    $text_setting = $data['format'];
+
     /* Delete old nodes */
     $sql = "DELETE FROM node WHERE `site_name` = ?";
     $stmt = $dbHandle->prepare($sql);
@@ -64,7 +73,14 @@ function etype_wire_node_export() {
       $wrapper = entity_metadata_wrapper('node', $object);
 
       $body = $wrapper->body->value();
-      $safe_body = $body['safe_value'];
+      switch ($text_setting) {
+        case 'plain':
+          $safe_body = $body['value'];
+          break;
+
+        default;
+          $safe_body = $body['safe_value'];
+      }
 
       if (isset ($wrapper->field_kicker)) {
         $kicker = $wrapper->field_kicker->value();
