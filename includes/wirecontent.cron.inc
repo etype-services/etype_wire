@@ -11,14 +11,18 @@ function etype_wire_node_export() {
   }
 
   $sections = [];
+
+  /* Get global settings */
   $dbHandle = _etype_wire_connect();
-  $sql = "SELECT `sections` FROM `settings`";
+  $sql = "SELECT `data` FROM `settings`";
   $stmt = $dbHandle->prepare($sql);
   $stmt->execute();
   $stmt->setFetchMode(PDO::FETCH_OBJ);
   $res = $stmt->fetchAll();
-  if (!empty($res[0]->sections)) {
-    $sections = explode("|", $res[0]->sections);
+  $data = unserialize($res[0]->data);
+  $text_setting = $data['format'];
+  if (!empty($data['sections'])) {
+    $sections = explode("|", $data['sections']);
   }
 
   /* get last 10 published nodes from this site */
@@ -53,15 +57,6 @@ function etype_wire_node_export() {
     $site_name = variable_get('site_name', 'Drupal');
     $etype_wire_cluster = variable_get('etype_wire_cluster');
     $cluster = implode($etype_wire_cluster, ',');
-
-    /* Get global text setting */
-    $sql = "SELECT `data` FROM `settings`";
-    $stmt = $dbHandle->prepare($sql);
-    $stmt->execute();
-    $stmt->setFetchMode(PDO::FETCH_OBJ);
-    $res = $stmt->fetchAll();
-    $data = unserialize($res[0]->data);
-    $text_setting = $data['format'];
 
     /* Delete old nodes */
     $sql = "DELETE FROM node WHERE `site_name` = ?";
