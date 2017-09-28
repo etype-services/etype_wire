@@ -129,14 +129,18 @@ function etype_wire_site_admin() {
     $form = [];
 
     $dbHandle = _etype_wire_connect();
-    $sql = "SELECT `cluster` FROM `settings`";
+    $sql = "SELECT `data` FROM `settings`";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
     $res = $stmt->fetchAll();
-    if (!empty($res[0]->cluster)) {
 
-      $etype_wire_cluster_options = unserialize($res[0]->cluster);
+    $res = $stmt->fetchAll();
+    $data = unserialize($res[0]->data);
+
+    if (!empty($data['cluster'])) {
+
+      $etype_wire_cluster_options = unserialize($data['cluster']);
       $first_key = key($etype_wire_cluster_options);
       /* get current setting */
       $etype_wire_cluster_default = variable_get('etype_wire_cluster',
