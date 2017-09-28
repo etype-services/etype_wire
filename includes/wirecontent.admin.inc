@@ -306,7 +306,7 @@ function etype_wire_global_admin_submit($form, &$form_state) {
 
   $data['cluster'] = $arr;
   $data['sections'] = $form['sections']['etype_wire_section_setup']["#value"];
-  $data['format'] = $form['sections']['etype_wire_text_format']["#value"];
+  $data['format'] = $form['settings']['etype_wire_text_format']["#value"];
   $serialized = serialize($data);
   $dbHandle = _etype_wire_connect();
   $sql = "UPDATE `settings` set `data` = ?";
