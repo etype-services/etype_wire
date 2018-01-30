@@ -7,6 +7,7 @@ function etype_wire_node_export() {
 
   /* check connection */
   if (_etype_wire_check_connection() === false) {
+    echo 'problem';
     return;
   }
 
