@@ -202,6 +202,7 @@ function etype_wire_global_admin() {
 
     $form = [];
     $text = '';
+    $data = [];
 
     $dbHandle = _etype_wire_connect();
     $sql = "SELECT `data` FROM `settings`";
@@ -252,7 +253,7 @@ function etype_wire_global_admin() {
       '#type' => 'textfield',
       '#title' => t('Sections or Categories'),
       '#description' => t('Article section tags to match using regex when exporting nodes to the wire database. Separated by |.'),
-      '#default_value' => $data['taxonomy'],
+      '#default_value' => $data['sections'],
     );
 
     $form['sections']['etype_wire_taxonomy'] = array(
