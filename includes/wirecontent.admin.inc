@@ -311,9 +311,9 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $stmt = $dbHandle->prepare($sql);
   var_dump($sql);
 
-  $stmt->execute([':data' => $serialized]);
+  $res = $stmt->execute([':data' => $serialized]);
 
-  var_dump($stmt);
+  var_dump($res);
 
   exit;
 
