@@ -303,18 +303,20 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $data['sections'] = $form['sections']['etype_wire_section_setup']["#value"];
   $data['format'] = $form['settings']['etype_wire_text_format']["#value"];
 
-  var_dump($data);
-
   $serialized = serialize($data);
-
-  echo $serialized;
-
   $dbHandle = _etype_wire_connect();
+  $sql = "SELECT COUNT() FROM `data`";
+  $stmt = $dbHandle->prepare($sql);
+  $res = $stmt->execute();
+
+  var_dump($res);
+
+
   $sql = "UPDATE `settings` set `data` = :data";
   $stmt = $dbHandle->prepare($sql);
   var_dump($sql);
 
-  $res = $stmt->execute([':data' => $serialized]);
+  // $res = $stmt->execute([':data' => $serialized]);
 
   var_dump($res);
 
