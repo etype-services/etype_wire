@@ -151,22 +151,21 @@ function _etype_wire_connect() {
   $host = $databases['default']['wire']['host'];
   $database = $databases['default']['wire']['database'];
 
-  echo $user;
-  echo $host;
-  echo $password;
-  echo $database;
-  exit;
-
   try {
     $dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=utf8",
       $user, $password);
     $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     // always disable emulated prepared statement when using the MySQL driver
     $dbHandle->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
-    return $dbHandle;
   } catch (Exception $e) {
     echo "There was an error connecting to the database";
+    $dbHandle = false;
   }
+
+  var_dump($dbHandle);
+  exit;
+
+  return $dbHandle;
 
 }
 
