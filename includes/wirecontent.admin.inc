@@ -307,6 +307,7 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $dbHandle = _etype_wire_connect();
   $sql = "UPDATE `settings` set `data` = ?";
   $stmt = $dbHandle->prepare($sql);
+  echo $stmt;
   $stmt->execute([$serialized]);
 
   // remove form value, do not need to store it
