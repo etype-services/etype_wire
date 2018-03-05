@@ -305,7 +305,7 @@ function etype_wire_global_admin_submit($form, &$form_state) {
 
   $serialized = serialize($data);
   $dbHandle = _etype_wire_connect();
-  $sql = "SELECT COUNT(*) as count FROM `data`";
+  $sql = "SELECT COUNT(*) as c FROM `settings`";
   $stmt = $dbHandle->prepare($sql);
   $res = $stmt->execute();
 
