@@ -162,9 +162,7 @@ function _etype_wire_connect() {
     exit;
   }
 
-  var_dump($dbHandle);
   return $dbHandle;
-
 }
 
 /**

@@ -317,10 +317,6 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $stmt = $dbHandle->prepare($sql);
   $res = $stmt->execute([':data' => $serialized]);
 
-  var_dump($res);
-
-  exit;
-
   // remove form value, do not need to store it
   unset ($form['cluster']['etype_wire_cluster_setup']);
   unset ($form['section']['etype_wire_section_setup']);
