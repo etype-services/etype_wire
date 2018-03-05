@@ -306,6 +306,9 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   var_dump($data);
 
   $serialized = serialize($data);
+
+  echo $serialized;
+
   $dbHandle = _etype_wire_connect();
   $sql = "UPDATE `settings` set `data` = :data";
   $stmt = $dbHandle->prepare($sql);
