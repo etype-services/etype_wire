@@ -159,7 +159,6 @@ function _etype_wire_connect() {
     $dbHandle->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
   } catch (Exception $e) {
     echo "There was an error connecting to the database";
-    $dbHandle = false;
   }
 
   var_dump($dbHandle);
