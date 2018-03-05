@@ -302,8 +302,6 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $data['sections'] = $form['sections']['etype_wire_section_setup']["#value"];
   $data['format'] = $form['settings']['etype_wire_text_format']["#value"];
 
-  var_dump($data);
-  exit;
 
   $serialized = serialize($data);
   $dbHandle = _etype_wire_connect();

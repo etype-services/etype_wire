@@ -151,6 +151,8 @@ function _etype_wire_connect() {
   $host = $databases['default']['wire']['host'];
   $database = $databases['default']['wire']['database'];
 
+  echo $user;
+
   try {
     $dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=utf8",
       $user, $password);
