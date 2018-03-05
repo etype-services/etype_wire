@@ -250,9 +250,16 @@ function etype_wire_global_admin() {
 
     $form['sections']['etype_wire_section_setup'] = array(
       '#type' => 'textfield',
-      '#title' => t('Sections'),
+      '#title' => t('Sections or Categories'),
       '#description' => t('Article section tags to match using regex when exporting nodes to the wire database. Separated by |.'),
-      '#default_value' => $data['sections'],
+      '#default_value' => $data['taxonomy'],
+    );
+
+    $form['sections']['etype_wire_taxonomy'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Taxonomy Field'),
+      '#description' => t('The name of the field used to describe article sections or categories.'),
+      '#default_value' => $data['taxonomy'],
     );
 
     $form['settings'] = array(
@@ -302,6 +309,7 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $data['cluster'] = $arr;
   $data['sections'] = $form['sections']['etype_wire_section_setup']["#value"];
   $data['format'] = $form['settings']['etype_wire_text_format']["#value"];
+  $data['taxonomy'] = $form['settings']['etype_wire_taxonomy']["#value"];
 
   $serialized = serialize($data);
   $dbHandle = _etype_wire_connect();
