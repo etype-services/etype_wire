@@ -210,12 +210,13 @@ function etype_wire_global_admin() {
     $stmt->setFetchMode(PDO::FETCH_OBJ);
 
     $res = $stmt->fetchAll();
-    $data = unserialize($res[0]->data);
-
-    if (!empty($data['cluster'])) {
-      $etype_wire_cluster_options = $data['cluster'];
-      foreach ($etype_wire_cluster_options as $k => $v) {
-        $text .= "$k|$v\n";
+    if (isset($res[0]->data)) {
+      $data = unserialize($res[0]->data);
+      if (!empty($data['cluster'])) {
+        $etype_wire_cluster_options = $data['cluster'];
+        foreach ($etype_wire_cluster_options as $k => $v) {
+          $text .= "$k|$v\n";
+        }
       }
     }
 
