@@ -309,15 +309,13 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $stmt = $dbHandle->prepare($sql);
   $stmt->execute();
   $res = $stmt->fetchAll();
-
-  var_dump($res);
-
-
-  $sql = "UPDATE `settings` set `data` = :data";
+  if ($res[0]['c'] == 0) {
+    $sql = "INSERT INTO `settings` set `data` = :data";
+  } else {
+    $sql = "UPDATE `settings` set `data` = :data";
+  }
   $stmt = $dbHandle->prepare($sql);
-  var_dump($sql);
-
-  // $res = $stmt->execute([':data' => $serialized]);
+  $res = $stmt->execute([':data' => $serialized]);
 
   var_dump($res);
 
