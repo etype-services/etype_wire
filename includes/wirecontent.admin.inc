@@ -298,17 +298,6 @@ function etype_wire_global_admin_submit($form, &$form_state) {
     }
   }
 
-  $serialized = serialize($arr);
-  $dbHandle = _etype_wire_connect();
-  $sql = "UPDATE `settings` set `cluster` = ?";
-  $stmt = $dbHandle->prepare($sql);
-  $stmt->execute([$serialized]);
-
-  $sql = "UPDATE `settings` set `sections` = ?";
-  $stmt = $dbHandle->prepare($sql);
-  $value = $form['sections']['etype_wire_section_setup']["#value"];
-  $stmt->execute([$value]);
-
   $data['cluster'] = $arr;
   $data['sections'] = $form['sections']['etype_wire_section_setup']["#value"];
   $data['format'] = $form['settings']['etype_wire_text_format']["#value"];
