@@ -59,8 +59,8 @@ function etype_wire_menu() {
     'file' => 'includes/wirecontent.cron.inc',
   ];
 
-  /* admin settings page */
-  $items['admin/config/etype_wire'] = [
+  /* admin settings page
+  $items['admin/config/etype/etype_wire'] = [
     'title' => 'eType',
     'description' => 'eType Settings',
     // Like any other menu item
@@ -71,9 +71,9 @@ function etype_wire_menu() {
     // Permission needed to view this area
     'file' => 'system.admin.inc',
     'file path' => drupal_get_path('module', 'system'),
-  ];
+  ]; */
 
-  $items['admin/config/etype_wire/settings'] = [
+  $items['admin/config/etype/etype_wire/settings'] = [
     'title' => 'Wire Content',
     'description' => 'Wire content options.',
     'page callback' => 'drupal_get_form',
