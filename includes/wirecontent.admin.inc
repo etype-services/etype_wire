@@ -151,6 +151,7 @@ function etype_wire_site_admin() {
         '#type' => 'fieldset',
         '#title' => t('Cluster'),
         '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
       );
 
       $form['cluster']['etype_wire_cluster'] = [
@@ -169,6 +170,7 @@ function etype_wire_site_admin() {
       '#type' => 'fieldset',
       '#title' => t('Other Settings'),
       '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
     );
 
     $form['settings']['etype_wire_cron_setting'] = [
@@ -231,7 +233,7 @@ function etype_wire_global_admin() {
       '#type' => 'fieldset',
       '#title' => t('Cluster'),
       '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
+      '#collapsed' => FALSE,
     );
 
     $form['cluster']['etype_wire_cluster_setup'] = array(
@@ -246,7 +248,7 @@ function etype_wire_global_admin() {
       '#type' => 'fieldset',
       '#title' => t('Section Tags'),
       '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
+      '#collapsed' => FALSE,
     );
 
     $form['sections']['etype_wire_section_setup'] = array(
@@ -267,7 +269,7 @@ function etype_wire_global_admin() {
       '#type' => 'fieldset',
       '#title' => t('Other Settings'),
       '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
+      '#collapsed' => FALSE,
     );
 
     $form['settings']['etype_wire_text_format'] = array(
