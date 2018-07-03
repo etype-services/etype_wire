@@ -70,13 +70,13 @@ function etype_wire_menu() {
   ];
 
 
-  $items['admin/config/etype_wire/settings/site'] = [
+  $items['admin/config/etype/etype_wire/settings/site'] = [
     'title' => 'Site',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10,
   ];
 
-  $items['admin/config/etype_wire/settings/global'] = array(
+  $items['admin/config/etype/etype_wire/settings/global'] = array(
     'title' => 'Global',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'drupal_get_form',
