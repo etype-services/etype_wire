@@ -127,6 +127,7 @@ function etype_wire_theme() {
  * Implements hook_node_update().
  */
 function etype_wire_node_update() {
+  include 'includes/wirecontent.cron.inc';
   etype_wire_node_export();
 }
 
