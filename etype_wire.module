@@ -49,14 +49,14 @@ function etype_wire_menu() {
     'file' => 'includes/wirecontent.add.inc',
   ];
 
-  /* to be able to run cron job from url */
-  $items['admin/wirecontent/cron'] = [
+  /* to be able to run export via url */
+  $items['admin/wirecontent/export'] = [
     'title' => 'Wire Content',
-    'description' => "Run Wire cron job.",
+    'description' => "Export wire stories.",
     'page callback' => 'etype_wire_node_export',
     'access arguments' => ['administer wire content'],
     'type' => MENU_CALLBACK,
-    'file' => 'includes/wirecontent.cron.inc',
+    'file' => 'includes/wirecontent.export.inc',
   ];
 
   $items['admin/config/etype/etype_wire/settings'] = [
@@ -104,7 +104,7 @@ function etype_wire_cronapi($op, $job = NULL) {
     'rule' => $cron,
     'callback' => 'etype_wire_node_export',
     'arguments' => ['all'],
-    'file' => 'includes/wirecontent.cron.inc',
+    'file' => 'includes/wirecontent.export.inc',
   ];
 
   return $items;
@@ -128,7 +128,7 @@ function etype_wire_theme() {
  * Implements hook_node_update().
  */
 function etype_wire_node_update() {
-  include 'includes/wirecontent.cron.inc';
+  include 'includes/wirecontent.export.inc';
   etype_wire_node_export();
 }
 
