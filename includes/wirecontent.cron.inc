@@ -25,7 +25,7 @@ function etype_wire_node_export() {
     $sections = explode("|", $data['sections']);
   }
   if (empty(($data['taxonomy']))) {
-    $data['taxonomy'] = 'section';
+    $data['taxonomy'] = 'field_section';
   }
 
   /* get last 10 published nodes from this site */
@@ -131,7 +131,7 @@ VALUES (
       $stmt = $dbHandle->prepare($sql);
       try {
         $stmt->execute(["$base_url", "$site_name", "$cluster"]);
-        echo 'Error occurred:'.implode(":",$dbHandle->errorInfo());
+        // echo 'Error occurred:'.implode(":",$dbHandle->errorInfo());
       } catch (Exception $e) {
         print_r($stmt->errorInfo());
         $error = $stmt->errorInfo();
