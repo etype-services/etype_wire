@@ -7,6 +7,7 @@ function etype_wire_node_export() {
 
   /* check connection */
   if (_etype_wire_check_connection() === false) {
+    watchdog('etype_wire', "No entry in settings.php for wire database", [], WATCHDOG_ERROR);
     return;
   }
 
@@ -135,7 +136,7 @@ VALUES (
       } catch (Exception $e) {
         print_r($stmt->errorInfo());
         $error = $stmt->errorInfo();
-        // watchdog('etype_wire', "There was an error inserting the data for $base_url.", [], WATCHDOG_ERROR);
+        watchdog('etype_wire', "There was an error inserting the data for $base_url.", [], WATCHDOG_ERROR);
         die ("Error: (".$error[0].':'.$error[1].') '.$error[2]);
       }
     }
