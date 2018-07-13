@@ -173,12 +173,12 @@ function etype_wire_site_admin() {
       '#collapsed' => FALSE,
     );
 
-    $form['settings']['etype_wire_cron_setting'] = [
+    /*$form['settings']['etype_wire_cron_setting'] = [
       '#title' => t('Cron'),
       '#description' => t("Enter a valid cron setting. The site will update content in the wire database on this schedule."),
       '#type' => 'textfield',
       '#default_value' => variable_get('etype_wire_cron_setting', '1 * * * *'),
-    ];
+    ];*/
 
     return system_settings_form($form);
   }
