@@ -124,6 +124,13 @@ function etype_wire_theme() {
 }
 
 /**
+ * Implements hook_node_update().
+ */
+function etype_wire_node_update() {
+  etype_wire_node_export();
+}
+
+/**
  * Connect to wire db
  * Connection settings need to be added to settings.php as
  * $databases['default']['wire']
