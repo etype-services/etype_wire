@@ -59,21 +59,7 @@ function etype_wire_menu() {
     'file' => 'includes/wirecontent.cron.inc',
   ];
 
-  /* admin settings page */
-  $items['admin/config/etype_wire'] = [
-    'title' => 'eType',
-    'description' => 'eType Settings',
-    // Like any other menu item
-    'position' => 'right',
-    'weight' => -15,
-    'page callback' => 'system_admin_menu_block_page',
-    'access arguments' => ['administer wire content'],
-    // Permission needed to view this area
-    'file' => 'system.admin.inc',
-    'file path' => drupal_get_path('module', 'system'),
-  ];
-
-  $items['admin/config/etype_wire/settings'] = [
+  $items['admin/config/etype/etype_wire/settings'] = [
     'title' => 'Wire Content',
     'description' => 'Wire content options.',
     'page callback' => 'drupal_get_form',
@@ -84,13 +70,13 @@ function etype_wire_menu() {
   ];
 
 
-  $items['admin/config/etype_wire/settings/site'] = [
+  $items['admin/config/etype/etype_wire/settings/site'] = [
     'title' => 'Site',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10,
   ];
 
-  $items['admin/config/etype_wire/settings/global'] = array(
+  $items['admin/config/etype/etype_wire/settings/global'] = array(
     'title' => 'Global',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'drupal_get_form',
@@ -159,6 +145,7 @@ function _etype_wire_connect() {
     $dbHandle->setAttribute(PDO::ATTR_EMULATE_PREPARES, FALSE);
   } catch (Exception $e) {
     echo "There was an error connecting to the database";
+    exit;
   }
 
   return $dbHandle;

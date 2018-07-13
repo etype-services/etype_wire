@@ -11,21 +11,26 @@ function etype_wire_node_export() {
   }
 
   $sections = [];
+
+  /* Get global settings */
   $dbHandle = _etype_wire_connect();
-  $sql = "SELECT `sections` FROM `settings`";
+  $sql = "SELECT `data` FROM `settings`";
   $stmt = $dbHandle->prepare($sql);
   $stmt->execute();
   $stmt->setFetchMode(PDO::FETCH_OBJ);
   $res = $stmt->fetchAll();
-  if (!empty($res[0]->sections)) {
-    $sections = explode("|", $res[0]->sections);
+  $data = unserialize($res[0]->data);
+  $text_setting = $data['format'];
+  if (!empty($data['sections'])) {
+    $sections = explode("|", $data['sections']);
   }
 
   /* get last 10 published nodes from this site */
   $query = db_select('node', 'n');
   $query->distinct();
-  $query->join('field_data_field_section', 'f', 'n.nid = f.entity_id');
-  $query->join('taxonomy_term_data', 't', 'f.field_section_tid = t.tid');
+  $query->join('field_data_' .  $data['taxonomy'], 'f', 'n.nid
+    = f.entity_id');
+  $query->join('taxonomy_term_data', 't', 'f.' .  $data['taxonomy'] . '_tid = t.tid');
   $query->fields('n');
   $query->condition('n.type', 'article');
   $query->condition('n.status', '1');
@@ -64,7 +69,14 @@ function etype_wire_node_export() {
       $wrapper = entity_metadata_wrapper('node', $object);
 
       $body = $wrapper->body->value();
-      $safe_body = $body['safe_value'];
+      switch ($text_setting) {
+        case 'plain':
+          $safe_body = $body['value'];
+          break;
+
+        default;
+          $safe_body = $body['safe_value'];
+      }
 
       if (isset ($wrapper->field_kicker)) {
         $kicker = $wrapper->field_kicker->value();

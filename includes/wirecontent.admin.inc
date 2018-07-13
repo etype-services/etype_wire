@@ -112,7 +112,10 @@ function theme_wire_admin_content($variables) {
   return theme('table', ['header' => $header, 'rows' => $rows]);
 }
 
-/* admin site settings form */
+/**
+ * @return array
+ * site settings form
+ */
 function etype_wire_site_admin() {
 
   if (_etype_wire_check_connection() === false) {
@@ -129,14 +132,16 @@ function etype_wire_site_admin() {
     $form = [];
 
     $dbHandle = _etype_wire_connect();
-    $sql = "SELECT `cluster` FROM `settings`";
+    $sql = "SELECT `data` FROM `settings`";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
     $res = $stmt->fetchAll();
-    if (!empty($res[0]->cluster)) {
+    $data = unserialize($res[0]->data);
 
-      $etype_wire_cluster_options = unserialize($res[0]->cluster);
+    if (!empty($data['cluster'])) {
+
+      $etype_wire_cluster_options = $data['cluster'];
       $first_key = key($etype_wire_cluster_options);
       /* get current setting */
       $etype_wire_cluster_default = variable_get('etype_wire_cluster',
@@ -146,6 +151,7 @@ function etype_wire_site_admin() {
         '#type' => 'fieldset',
         '#title' => t('Cluster'),
         '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
       );
 
       $form['cluster']['etype_wire_cluster'] = [
@@ -164,6 +170,7 @@ function etype_wire_site_admin() {
       '#type' => 'fieldset',
       '#title' => t('Other Settings'),
       '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
     );
 
     $form['settings']['etype_wire_cron_setting'] = [
@@ -197,26 +204,36 @@ function etype_wire_global_admin() {
 
     $form = [];
     $text = '';
+    $data = [];
 
     $dbHandle = _etype_wire_connect();
-    $sql = "SELECT `cluster`, `sections` FROM `settings`";
+    $sql = "SELECT `data` FROM `settings`";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute();
     $stmt->setFetchMode(PDO::FETCH_OBJ);
 
     $res = $stmt->fetchAll();
-    if (!empty($res[0]->cluster)) {
-      $etype_wire_cluster_options = unserialize($res[0]->cluster);
-      foreach ($etype_wire_cluster_options as $k => $v) {
-        $text .= "$k|$v\n";
+    if (isset($res[0]->data)) {
+      $data = unserialize($res[0]->data);
+      if (!empty($data['cluster'])) {
+        $etype_wire_cluster_options = $data['cluster'];
+        foreach ($etype_wire_cluster_options as $k => $v) {
+          $text .= "$k|$v\n";
+        }
       }
     }
+
+    /* Body export options */
+    $format_options = [
+      'html' => "HTML",
+      'plain' => "Plain",
+    ];
 
     $form['cluster'] = array(
       '#type' => 'fieldset',
       '#title' => t('Cluster'),
       '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
+      '#collapsed' => FALSE,
     );
 
     $form['cluster']['etype_wire_cluster_setup'] = array(
@@ -231,14 +248,37 @@ function etype_wire_global_admin() {
       '#type' => 'fieldset',
       '#title' => t('Section Tags'),
       '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
+      '#collapsed' => FALSE,
     );
 
     $form['sections']['etype_wire_section_setup'] = array(
       '#type' => 'textfield',
-      '#title' => t('Sections'),
+      '#title' => t('Sections or Categories'),
       '#description' => t('Article section tags to match using regex when exporting nodes to the wire database. Separated by |.'),
-      '#default_value' => $res[0]->sections,
+      '#default_value' => $data['sections'],
+    );
+
+    $form['sections']['etype_wire_taxonomy'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Taxonomy Field'),
+      '#description' => t('The name of the field used to describe article sections or categories.'),
+      '#default_value' => $data['taxonomy'],
+    );
+
+    $form['settings'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Other Settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+    );
+
+    $form['settings']['etype_wire_text_format'] = array(
+      '#type' => 'radios',
+      '#title' => t('Body Text Format'),
+      '#description' => t('Choose body export format.'),
+      '#default_value' => $data['format'],
+      '#checked' => 'checked',
+      '#options' =>  $format_options,
     );
 
     $form['#submit'][] = 'etype_wire_global_admin_submit';
@@ -255,6 +295,7 @@ function etype_wire_global_admin() {
  */
 function etype_wire_global_admin_submit($form, &$form_state) {
 
+  $data = [];
   $arr = [];
   $string = $form['cluster']['etype_wire_cluster_setup']["#value"];
   $split = preg_split("/\n/", $string);
@@ -268,16 +309,24 @@ function etype_wire_global_admin_submit($form, &$form_state) {
     }
   }
 
-  $serialized = serialize($arr);
-  $dbHandle = _etype_wire_connect();
-  $sql = "UPDATE `settings` set `cluster` = ?";
-  $stmt = $dbHandle->prepare($sql);
-  $stmt->execute([$serialized]);
+  $data['cluster'] = $arr;
+  $data['sections'] = $form['sections']['etype_wire_section_setup']["#value"];
+  $data['format'] = $form['settings']['etype_wire_text_format']["#value"];
+  $data['taxonomy'] = $form['sections']['etype_wire_taxonomy']["#value"];
 
-  $sql = "UPDATE `settings` set `sections` = ?";
+  $serialized = serialize($data);
+  $dbHandle = _etype_wire_connect();
+  $sql = "SELECT COUNT(*) as c FROM `settings`";
   $stmt = $dbHandle->prepare($sql);
-  $value = $form['sections']['etype_wire_section_setup']["#value"];
-  $stmt->execute([$value]);
+  $stmt->execute();
+  $res = $stmt->fetchAll();
+  if ($res[0]['c'] == 0) {
+    $sql = "INSERT INTO `settings` set `data` = :data";
+  } else {
+    $sql = "UPDATE `settings` set `data` = :data";
+  }
+  $stmt = $dbHandle->prepare($sql);
+  $res = $stmt->execute([':data' => $serialized]);
 
   // remove form value, do not need to store it
   unset ($form['cluster']['etype_wire_cluster_setup']);
