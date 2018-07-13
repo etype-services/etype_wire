@@ -24,6 +24,9 @@ function etype_wire_node_export() {
   if (!empty($data['sections'])) {
     $sections = explode("|", $data['sections']);
   }
+  if (empty(($data['taxonomy']))) {
+    $data['taxonomy'] = 'section';
+  }
 
   /* get last 10 published nodes from this site */
   $query = db_select('node', 'n');
@@ -132,9 +135,8 @@ VALUES (
       } catch (Exception $e) {
         print_r($stmt->errorInfo());
         $error = $stmt->errorInfo();
+        // watchdog('etype_wire', "There was an error inserting the data for $base_url.", [], WATCHDOG_ERROR);
         die ("Error: (".$error[0].':'.$error[1].') '.$error[2]);
-        watchdog('etype_wire', "There was an error inserting the data for $base_url.",
-          [], WATCHDOG_ERROR);
       }
     }
 
