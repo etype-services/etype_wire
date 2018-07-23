@@ -128,7 +128,7 @@ function etype_wire_theme() {
  * Implements hook_node_update().
  */
 function etype_wire_node_update() {
-  include 'includes/wirecontent.export.inc';
+  include_once 'includes/wirecontent.export.inc';
   etype_wire_node_export();
 }
 
