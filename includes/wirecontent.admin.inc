@@ -325,10 +325,10 @@ function etype_wire_global_admin_submit($form, &$form_state) {
 
   $data['cluster'] = $arr;
   $data['sections'] = $form['sections']['etype_wire_section_setup']["#value"];
+  $data['taxonomy'] = $form['sections']['etype_wire_taxonomy']["#value"];
   $data['format'] = $form['settings']['etype_wire_text_format']["#value"];
   $data['number'] = $form['settings']['etype_wire_export_number']["#value"];
-  $data['taxonomy'] = $form['sections']['etype_wire_taxonomy']["#value"];
-  $data['order'] = $form['sections']['etype_wire_export_order']["#value"];
+  $data['order'] = $form['settings']['etype_wire_export_order']["#value"];
 
   $serialized = serialize($data);
   $dbHandle = _etype_wire_connect();
@@ -348,7 +348,8 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   unset ($form['cluster']['etype_wire_cluster_setup']);
   unset ($form['sections']['etype_wire_section_setup']);
   unset ($form['sections']['etype_wire_taxonomy']);
-  unset ($form['sections']['etype_wire_export_number']);
-  unset ($form['sections']['etype_wire_export_order']);
+  unset ($form['settings']['etype_wire_text_format']);
+  unset ($form['settings']['etype_wire_export_number']);
+  unset ($form['settings']['etype_wire_export_order']);
 
 }
