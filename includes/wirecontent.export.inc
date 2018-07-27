@@ -22,6 +22,7 @@ function etype_wire_node_export() {
   $res = $stmt->fetchAll();
   $data = unserialize($res[0]->data);
   $text_setting = $data['format'];
+  $order = 'n.' . $data['order'];
   if (!empty($data['sections'])) {
     $sections = explode("|", $data['sections']);
   }
@@ -45,7 +46,7 @@ function etype_wire_node_export() {
     }
     $query->condition($db_or);
   }
-  $query->orderBy('n.changed', 'DESC');
+  $query->orderBy($order, 'DESC');
   $query->range(0, $data['number']);
   $results = $query->execute();
 

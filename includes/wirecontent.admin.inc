@@ -288,6 +288,13 @@ function etype_wire_global_admin() {
       '#title' => t('Number of stories to export'),
     );
 
+    $form['settings']['etype_wire_export_order'] = array(
+      '#type' => 'select',
+      '#options' => ['created','changed'],
+      '#default_value' => $data['order'],
+      '#title' => t('Export order'),
+    );
+
     $form['#submit'][] = 'etype_wire_global_admin_submit';
 
     return system_settings_form($form);
@@ -321,6 +328,7 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $data['format'] = $form['settings']['etype_wire_text_format']["#value"];
   $data['number'] = $form['settings']['etype_wire_export_number']["#value"];
   $data['taxonomy'] = $form['sections']['etype_wire_taxonomy']["#value"];
+  $data['order'] = $form['sections']['etype_wire_export_order']["#value"];
 
   $serialized = serialize($data);
   $dbHandle = _etype_wire_connect();
@@ -341,5 +349,6 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   unset ($form['sections']['etype_wire_section_setup']);
   unset ($form['sections']['etype_wire_taxonomy']);
   unset ($form['sections']['etype_wire_export_number']);
+  unset ($form['sections']['etype_wire_export_order']);
 
 }
