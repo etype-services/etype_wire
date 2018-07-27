@@ -63,7 +63,7 @@ function etype_wire_admin_content() {
 SELECT * FROM `node` n
 LEFT JOIN `node_site` ns ON n.nid = ns.original_nid
 WHERE (
-  n.site NOT LIKE \"$url\"
+  n.site NOT LIKE \"%$url%\"
   AND (ns.site_base is NULL OR ns.site_base NOT LIKE \"%$url%\")
   $string
 )
