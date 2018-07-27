@@ -166,14 +166,14 @@ function etype_wire_site_admin() {
 
     }
 
-    $form['settings'] = array(
+    /*$form['settings'] = array(
       '#type' => 'fieldset',
       '#title' => t('Other Settings'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
     );
 
-    /*$form['settings']['etype_wire_cron_setting'] = [
+    $form['settings']['etype_wire_cron_setting'] = [
       '#title' => t('Cron'),
       '#description' => t("Enter a valid cron setting. The site will update content in the wire database on this schedule."),
       '#type' => 'textfield',
@@ -267,7 +267,7 @@ function etype_wire_global_admin() {
 
     $form['settings'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Other Settings'),
+      '#title' => t('Export Settings'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
     );
@@ -279,6 +279,13 @@ function etype_wire_global_admin() {
       '#default_value' => $data['format'],
       '#checked' => 'checked',
       '#options' =>  $format_options,
+    );
+
+    $form['settings']['etype_wire_export_number'] = array(
+      '#type' => 'select',
+      '#options' => ['5','10','20','30'],
+      '#default_value' => $data['number'],
+      '#title' => t('Number of stories to export'),
     );
 
     $form['#submit'][] = 'etype_wire_global_admin_submit';
@@ -312,7 +319,8 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $data['cluster'] = $arr;
   $data['sections'] = $form['sections']['etype_wire_section_setup']["#value"];
   $data['format'] = $form['settings']['etype_wire_text_format']["#value"];
-  $data['taxonomy'] = $form['sections']['etype_wire_taxonomy']["#value"];
+  $data['number'] = $form['settings']['etype_wire_text_format']["#value"];
+  $data['taxonomy'] = $form['sections']['etype_wire_export_number']["#value"];
 
   $serialized = serialize($data);
   $dbHandle = _etype_wire_connect();
@@ -330,6 +338,8 @@ function etype_wire_global_admin_submit($form, &$form_state) {
 
   // remove form value, do not need to store it
   unset ($form['cluster']['etype_wire_cluster_setup']);
-  unset ($form['section']['etype_wire_section_setup']);
+  unset ($form['sections']['etype_wire_section_setup']);
+  unset ($form['sections']['etype_wire_taxonomy']);
+  unset ($form['sections']['etype_wire_export_number']);
 
 }

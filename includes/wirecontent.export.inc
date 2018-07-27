@@ -29,7 +29,7 @@ function etype_wire_node_export() {
     $data['taxonomy'] = 'field_section';
   }
 
-  /* get last 10 published nodes from this site */
+  /* get last n published/updated nodes from this site */
   $query = db_select('node', 'n');
   $query->distinct();
   $query->join('field_data_' .  $data['taxonomy'], 'f', 'n.nid
@@ -46,7 +46,7 @@ function etype_wire_node_export() {
     $query->condition($db_or);
   }
   $query->orderBy('n.changed', 'DESC');
-  $query->range(0, 10);
+  $query->range(0, $data['number']);
   $results = $query->execute();
 
   $nodes = [];
