@@ -274,8 +274,7 @@ function etype_wire_global_admin() {
 
     $form['settings']['etype_wire_text_format'] = array(
       '#type' => 'radios',
-      '#title' => t('Body Text Format'),
-      '#description' => t('Choose body export format.'),
+      '#title' => t('Body text export format'),
       '#default_value' => $data['format'],
       '#checked' => 'checked',
       '#options' =>  $format_options,
