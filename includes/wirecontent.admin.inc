@@ -283,14 +283,14 @@ function etype_wire_global_admin() {
 
     $form['settings']['etype_wire_export_number'] = array(
       '#type' => 'select',
-      '#options' => ['5','10','20','30'],
+      '#options' => ['5'=>'5','10'=>'10','20'=>'20','30'=>'30'],
       '#default_value' => $data['number'],
       '#title' => t('Number of stories to export'),
     );
 
     $form['settings']['etype_wire_export_order'] = array(
       '#type' => 'select',
-      '#options' => ['created','changed'],
+      '#options' => ['created'=>'Published','changed'=>'Updated'],
       '#default_value' => $data['order'],
       '#title' => t('Export order'),
     );
