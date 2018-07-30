@@ -216,11 +216,11 @@ function etype_wire_site_admin() {
 }
 
 function etype_wire_site_admin_submit($form, &$form_state) {
-  dpm ($form['sections']);
-  if ($form['sections']['etype_wire_export_since']["#value"] > 0) {
-    $form['sections']['etype_wire_export_number']["#value"] = 0;
-  } else if ($form['sections']['etype_wire_export_number']["#value"] > 0) {
-    $form['sections']['etype_wire_export_since']["#value"] = 0;
+  dpm ($form['settings']);
+  if ($form['settings']['etype_wire_export_since']["#value"] > 0) {
+    $form['settings']['etype_wire_export_number']["#value"] = 0;
+  } else if ($form['settings']['etype_wire_export_number']["#value"] > 0) {
+    $form['settings']['etype_wire_export_since']["#value"] = 0;
   }
 }
 
