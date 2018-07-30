@@ -166,19 +166,41 @@ function etype_wire_site_admin() {
 
     }
 
-    /*$form['settings'] = array(
+    $form['settings'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Other Settings'),
+      '#title' => t('Export Settings'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
     );
 
-    $form['settings']['etype_wire_cron_setting'] = [
-      '#title' => t('Cron'),
-      '#description' => t("Enter a valid cron setting. The site will update content in the wire database on this schedule."),
-      '#type' => 'textfield',
-      '#default_value' => variable_get('etype_wire_cron_setting', '1 * * * *'),
-    ];*/
+    /* Body export options */
+    $format_options = [
+      'html' => "HTML",
+      'plain' => "Plain",
+    ];
+
+    $form['settings']['etype_wire_text_format'] = array(
+      '#type' => 'radios',
+      '#title' => t('Body text export format'),
+      '#default_value' =>  variable_get('etype_wire_text_format', 'html'),
+      '#checked' => 'checked',
+      '#options' =>  $format_options,
+    );
+
+    $form['settings']['etype_wire_export_number'] = array(
+      '#type' => 'select',
+      '#options' => ['5'=>'5','10'=>'10','20'=>'20','30'=>'30'],
+      '#default_value' => variable_get('etype_wire_export_number', '10'),
+      '#title' => t('Number of stories to export'),
+    );
+
+    $form['settings']['etype_wire_export_order'] = array(
+      '#type' => 'select',
+      '#options' => ['created'=>'Published','changed'=>'Updated'],
+      '#default_value' => variable_get('etype_wire_export_order', 'created'),
+      '#title' => t('Export order'),
+    );
+
 
     return system_settings_form($form);
   }
@@ -223,12 +245,6 @@ function etype_wire_global_admin() {
       }
     }
 
-    /* Body export options */
-    $format_options = [
-      'html' => "HTML",
-      'plain' => "Plain",
-    ];
-
     $form['cluster'] = array(
       '#type' => 'fieldset',
       '#title' => t('Cluster'),
@@ -265,35 +281,6 @@ function etype_wire_global_admin() {
       '#default_value' => $data['taxonomy'],
     );
 
-    $form['settings'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Export Settings'),
-      '#collapsible' => TRUE,
-      '#collapsed' => FALSE,
-    );
-
-    $form['settings']['etype_wire_text_format'] = array(
-      '#type' => 'radios',
-      '#title' => t('Body text export format'),
-      '#default_value' => $data['format'],
-      '#checked' => 'checked',
-      '#options' =>  $format_options,
-    );
-
-    $form['settings']['etype_wire_export_number'] = array(
-      '#type' => 'select',
-      '#options' => ['5'=>'5','10'=>'10','20'=>'20','30'=>'30'],
-      '#default_value' => $data['number'],
-      '#title' => t('Number of stories to export'),
-    );
-
-    $form['settings']['etype_wire_export_order'] = array(
-      '#type' => 'select',
-      '#options' => ['created'=>'Published','changed'=>'Updated'],
-      '#default_value' => $data['order'],
-      '#title' => t('Export order'),
-    );
-
     $form['#submit'][] = 'etype_wire_global_admin_submit';
 
     return system_settings_form($form);
@@ -325,9 +312,6 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   $data['cluster'] = $arr;
   $data['sections'] = $form['sections']['etype_wire_section_setup']["#value"];
   $data['taxonomy'] = $form['sections']['etype_wire_taxonomy']["#value"];
-  $data['format'] = $form['settings']['etype_wire_text_format']["#value"];
-  $data['number'] = $form['settings']['etype_wire_export_number']["#value"];
-  $data['order'] = $form['settings']['etype_wire_export_order']["#value"];
 
   $serialized = serialize($data);
   $dbHandle = _etype_wire_connect();
@@ -347,8 +331,5 @@ function etype_wire_global_admin_submit($form, &$form_state) {
   unset ($form['cluster']['etype_wire_cluster_setup']);
   unset ($form['sections']['etype_wire_section_setup']);
   unset ($form['sections']['etype_wire_taxonomy']);
-  unset ($form['settings']['etype_wire_text_format']);
-  unset ($form['settings']['etype_wire_export_number']);
-  unset ($form['settings']['etype_wire_export_order']);
 
 }

@@ -21,8 +21,9 @@ function etype_wire_node_export() {
   $stmt->setFetchMode(PDO::FETCH_OBJ);
   $res = $stmt->fetchAll();
   $data = unserialize($res[0]->data);
-  $text_setting = $data['format'];
-  $order = 'n.' . $data['order'];
+  $text_setting = variable_get('etype_wire_text_format', 'html');
+  $order = 'n.' . variable_get('etype_wire_export_order', 'created');
+  $number = variable_get('etype_wire_export_number', '10');
   if (!empty($data['sections'])) {
     $sections = explode("|", $data['sections']);
   }
@@ -47,7 +48,7 @@ function etype_wire_node_export() {
     $query->condition($db_or);
   }
   $query->orderBy($order, 'DESC');
-  $query->range(0, $data['number']);
+  $query->range(0, $number);
   $results = $query->execute();
 
   $nodes = [];
