@@ -13,7 +13,7 @@ function etype_wire_node_export() {
 
   $sections = [];
 
-  /* Get global settings */
+  /* Get settings */
   $dbHandle = _etype_wire_connect();
   $sql = "SELECT `data` FROM `settings`";
   $stmt = $dbHandle->prepare($sql);
@@ -107,6 +107,11 @@ function etype_wire_node_export() {
       else {
         $file_path = '';
         $safe_caption = '';
+      }
+
+      /* Sites without UUID */
+      if (!isset ($node['uuid'])) {
+        $node['uuid'] = '';
       }
 
       $sql = "INSERT INTO node (
