@@ -218,10 +218,10 @@ function etype_wire_site_admin() {
 function etype_wire_site_admin_validate($form, &$form_state) {
   dpm ($form['settings']);
   dpm ($form_state);
-  if ((int)$form['settings']['etype_wire_export_since']["#value"] > 0) {
-    $form['settings']['etype_wire_export_number']["#value"] = 0;
-  } else if ((int)$form['settings']['etype_wire_export_number']["#value"] > 0) {
-    $form['settings']['etype_wire_export_since']["#value"] = 0;
+  if ((int)$form_state['values']['etype_wire_export_since'] > 0) {
+    $form_state['values']['etype_wire_export_number'] = 0;
+  } else if ((int)$form_state['values']['etype_wire_export_number'] > 0) {
+    $form_state['values']['etype_wire_export_since'] = 0;
   }
 }
 
