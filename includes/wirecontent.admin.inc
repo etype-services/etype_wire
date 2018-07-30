@@ -217,6 +217,7 @@ function etype_wire_site_admin() {
 
 function etype_wire_site_admin_submit($form, &$form_state) {
   dpm ($form['settings']);
+  dpm ($form_state);
   if ((int)$form['settings']['etype_wire_export_since']["#value"] > 0) {
     $form['settings']['etype_wire_export_number']["#value"] = 0;
   } else if ((int)$form['settings']['etype_wire_export_number']["#value"] > 0) {
