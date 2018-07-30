@@ -208,14 +208,14 @@ function etype_wire_site_admin() {
       '#title' => t('Export order'),
     );
 
-    $form['#submit'][] = 'etype_wire_site_admin_submit';
+    $form['#validate'][] = 'etype_wire_site_admin_validate';
 
     return system_settings_form($form);
 
   }
 }
 
-function etype_wire_site_admin_submit($form, &$form_state) {
+function etype_wire_site_admin_validate($form, &$form_state) {
   dpm ($form['settings']);
   dpm ($form_state);
   if ((int)$form['settings']['etype_wire_export_since']["#value"] > 0) {
