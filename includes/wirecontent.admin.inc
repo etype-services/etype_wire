@@ -198,7 +198,7 @@ function etype_wire_site_admin() {
       '#type' => 'select',
       '#options' => [0=>0, 5=>5, 10=>10, 20=>20],
       '#default_value' => variable_get('etype_wire_export_since', '0'),
-      '#title' => t('OR... number of days from which to export stories'),
+      '#title' => t('Or... number of days from which to export stories'),
     );
 
     $form['settings']['etype_wire_export_order'] = array(
