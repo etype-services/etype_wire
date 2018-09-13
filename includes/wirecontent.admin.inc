@@ -189,14 +189,14 @@ function etype_wire_site_admin() {
 
     $form['settings']['etype_wire_export_number'] = array(
       '#type' => 'select',
-      '#options' => [0=>0, 5=>5, 10=>10, 20=>20],
+      '#options' => [0=>0, 5=>5, 10=>10, 15=>15, 20=>20, 25=>25, 30=>30, 35=>35, 40=>40, 45=>45, 50=>50],
       '#default_value' => variable_get('etype_wire_export_number', '10'),
       '#title' => t('Number of stories to export'),
     );
 
     $form['settings']['etype_wire_export_since'] = array(
       '#type' => 'select',
-      '#options' => [0=>0, 1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 20=>20],
+      '#options' => [0=>0, 1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 15=>15, 20=>20],
       '#default_value' => variable_get('etype_wire_export_since', '0'),
       '#title' => t('Or... number of days from which to export stories (overrides above)'),
     );
