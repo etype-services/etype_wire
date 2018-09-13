@@ -145,9 +145,10 @@ function _etype_wire_connect() {
   $user = $databases['default']['wire']['username'];
   $host = $databases['default']['wire']['host'];
   $database = $databases['default']['wire']['database'];
+  $charset = $databases['default']['wire']['charset'];
 
   try {
-    $dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=utf8",
+    $dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=$charset",
       $user, $password);
     $dbHandle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     // always disable emulated prepared statement when using the MySQL driver
