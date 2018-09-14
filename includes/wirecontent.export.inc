@@ -21,10 +21,10 @@ function etype_wire_node_export() {
   $stmt->setFetchMode(PDO::FETCH_OBJ);
   $res = $stmt->fetchAll();
   $data = unserialize($res[0]->data);
-  $text_setting = variable_get('etype_wire_text_format', 'html');
   $order = 'n.' . variable_get('etype_wire_export_order', 'created');
   $number = variable_get('etype_wire_export_number', '10');
   $days = variable_get('etype_wire_export_since', '10');
+  $type = variable_get('etype_wire_content_type', 'article');
   if (!empty($data['sections'])) {
     $sections = explode("|", $data['sections']);
   }
@@ -39,7 +39,7 @@ function etype_wire_node_export() {
     = f.entity_id');
   $query->join('taxonomy_term_data', 't', 'f.' .  $data['taxonomy'] . '_tid = t.tid');
   $query->fields('n');
-  $query->condition('n.type', 'article');
+  $query->condition('n.type', $type);
   $query->condition('n.status', '1');
   if (count($sections) > 0) {
     $db_or = db_or();
