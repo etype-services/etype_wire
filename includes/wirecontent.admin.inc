@@ -184,7 +184,7 @@ function etype_wire_site_admin() {
 
     $form['settings']['etype_wire_content_type'] = array(
       '#type' => 'select',
-      '#title' => t('Choose which content type to export'),
+      '#title' => t('Choose which content type to import and export'),
       '#default_value' => variable_get('etype_wire_content_type', $default_type),
       '#options' => $types,
     );
