@@ -43,8 +43,9 @@ function etype_wire_node_add($nid, $site_name) {
   global $user;
   $entity_type = 'node';
 
+  $type = variable_get('etype_wire_content_type', 'article');
   $new_node = entity_create($entity_type, [
-    'type' => 'article',
+    'type' => $type,
     'uid' => $user->uid,
     'status' => 0,
   ]);
