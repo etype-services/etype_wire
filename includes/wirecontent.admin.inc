@@ -148,15 +148,15 @@ function etype_wire_site_admin() {
 
       $form['cluster'] = array(
         '#type' => 'fieldset',
-        '#title' => t('Cluster'),
+        '#title' => t('Group'),
         '#collapsible' => TRUE,
         '#collapsed' => FALSE,
       );
 
       $form['cluster']['etype_wire_cluster'] = [
-        '#title' => t('Site Cluster'),
+        '#title' => t('Site Group'),
         '#multiple' => TRUE,
-        '#description' => t("The cluster that this site belongs to. Sites can belong to one or more clusters and will only show wire content from checked clusters."),
+        '#description' => t("The group that this site belongs to. Sites can belong to one or more groups and will only show wire content from checked groups."),
         '#weight' => '1',
         '#type' => 'checkboxes',
         '#options' => $etype_wire_cluster_options,
@@ -237,7 +237,7 @@ function etype_wire_site_admin_validate($form, &$form_state) {
 }
 
 /**
- * Global Settings for the Clusters
+ * Global Settings for the Groups
  * @return array
  */
 function etype_wire_global_admin() {
@@ -276,15 +276,15 @@ function etype_wire_global_admin() {
 
     $form['cluster'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Cluster'),
+      '#title' => t('Group'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
     );
 
     $form['cluster']['etype_wire_cluster_setup'] = array(
       '#type' => 'textarea',
-      '#title' => t('Cluster Options'),
-      '#description' => t('Add or remove cluster options for all sites. Options should be on one line, with machine_name and name separated by |.'),
+      '#title' => t('Group Options'),
+      '#description' => t('Add or remove group options for all sites. Options should be on one line, with machine_name and name separated by |.'),
       '#default_value' => $text,
       '#required' => true,
     );
