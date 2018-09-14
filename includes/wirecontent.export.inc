@@ -121,7 +121,7 @@ function etype_wire_node_export() {
 VALUES (
     '" . $node['nid'] . "',
     '" . $node['vid'] . "',
-     'article',
+     '" . $type . "',
      '" . $node['language'] . "',
       " . $dbHandle->quote($node['title']) . ",
        " . $dbHandle->quote($safe_body) . ",
