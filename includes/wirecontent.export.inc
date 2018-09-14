@@ -25,9 +25,6 @@ function etype_wire_node_export() {
   $order = 'n.' . variable_get('etype_wire_export_order', 'created');
   $number = variable_get('etype_wire_export_number', '10');
   $days = variable_get('etype_wire_export_since', '10');
-  if ($days > 0) {
-    $date_diff = strtotime("-$days days");
-  }
   if (!empty($data['sections'])) {
     $sections = explode("|", $data['sections']);
   }
@@ -51,9 +48,13 @@ function etype_wire_node_export() {
     }
     $query->condition($db_or);
   }
-  if (isset($date_diff)) { $query->condition($order, $date_diff, '>');};
   $query->orderBy($order, 'DESC');
-  if ($number > 0) {$query->range(0, $number);}
+ if ($days > 0) {
+    $date_diff = strtotime("-$days days");
+    $query->condition($order, $date_diff, '>');
+  } else if ($number > 0) {
+    $query->range(0, $number);
+  }
   $results = $query->execute();
 
   $nodes = [];

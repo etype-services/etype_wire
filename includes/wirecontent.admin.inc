@@ -144,8 +144,7 @@ function etype_wire_site_admin() {
       $etype_wire_cluster_options = $data['cluster'];
       $first_key = key($etype_wire_cluster_options);
       /* get current setting */
-      $etype_wire_cluster_default = variable_get('etype_wire_cluster',
-        $etype_wire_cluster_options[$first_key]);
+      $etype_wire_cluster_default = variable_get('etype_wire_cluster', $etype_wire_cluster_options[$first_key]);
 
       $form['cluster'] = array(
         '#type' => 'fieldset',
@@ -173,6 +172,22 @@ function etype_wire_site_admin() {
       '#collapsed' => FALSE,
     );
 
+    /* Content Type to export */
+    $node_types = node_type_get_types();
+    $types = array();
+    foreach ($node_types as $item) {
+      $types[$item->type] = $item->name;
+    }
+    $tmp = variable_get('etype_wire_content_type');
+    $default_type = (empty($tmp))? 'article': $tmp;
+
+    $form['settings']['etype_wire_content_type'] = array(
+      '#type' => 'select',
+      '#title' => t('Choose which content type to export'),
+      '#default_value' => variable_get('etype_wire_content_type', $default_type),
+      '#options' => $types,
+    );
+
     /* Body export options */
     $format_options = [
       'html' => "HTML",
@@ -182,9 +197,9 @@ function etype_wire_site_admin() {
     $form['settings']['etype_wire_text_format'] = array(
       '#type' => 'radios',
       '#title' => t('Body text export format'),
-      '#default_value' =>  variable_get('etype_wire_text_format', 'html'),
+      '#default_value' => variable_get('etype_wire_text_format', 'html'),
       '#checked' => 'checked',
-      '#options' =>  $format_options,
+      '#options' => $format_options,
     );
 
     $form['settings']['etype_wire_export_number'] = array(
