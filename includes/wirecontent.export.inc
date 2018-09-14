@@ -62,12 +62,10 @@ function etype_wire_node_export() {
     $nodes[] = $n;
   }
 
-  var_dump($nodes);
-  exit;
-
   if (count($nodes) > 0) {
 
     $dbHandle = _etype_wire_connect();
+    $text_setting = variable_get('etype_wire_text_format', 'html');
 
     global $base_url;
     $site_name = variable_get('site_name', 'Drupal');
