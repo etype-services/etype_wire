@@ -162,6 +162,7 @@ function _etype_wire_connect() {
 
   } catch (Exception $e) {
     echo "There was an error connecting to the database";
+    var_dump($e);
     exit;
   }
 
