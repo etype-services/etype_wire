@@ -148,19 +148,14 @@ function _etype_wire_connect() {
   $database = $databases['default']['wire']['database'];
   $charset = $databases['default']['wire']['charset'];
   $collation = $databases['default']['wire']['collation'];
+  $pdo = $databases['default']['wire']['pdo'];
 
-  $options = [
-    PDO::MYSQL_ATTR_SSL_KEY => '/etc/mysql/certs/client-key.pem',
-    PDO::MYSQL_ATTR_SSL_CERT => '/etc/mysql/certs/client-cert.pem',
-    PDO::MYSQL_ATTR_SSL_CA => '/etc/mysql/certs/server-ca.pem',
-    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => FALSE,
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_EMULATE_PREPARES => FALSE,
-  ];
+  $pdo[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
+  $pdo[PDO::ATTR_EMULATE_PREPARES] = FALSE;
 
   try {
     $dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=$charset;collation=$collation",
-      $user, $password, $options);
+      $user, $password, $pdo);
 
   } catch (Exception $e) {
     echo "There was an error connecting to the database";
