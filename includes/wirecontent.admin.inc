@@ -241,7 +241,7 @@ function etype_wire_site_admin() {
       '#title' => t('Cron Schedule'),
       '#description' => t('Enter a valid cron schedule'),
       '#size' => 55,
-      '#default_value' => variable_get('etype_wire_cron_schedule'),
+      '#default_value' => variable_get('etype_wire_cron_schedule', '1 * * * *'),
     );
 
     $form['#validate'][] = 'etype_wire_site_admin_validate';
