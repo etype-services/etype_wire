@@ -110,7 +110,7 @@ function theme_wire_admin_content($variables) {
     ];
   }
 
-  $per_page = 10;
+  $per_page = 50;
   $current_page = pager_default_initialize(count($rows), $per_page);
   $chunks = array_chunk($rows, $per_page, TRUE);
   // Show the appropriate items from the list
