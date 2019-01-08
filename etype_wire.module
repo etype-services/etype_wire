@@ -146,8 +146,8 @@ function _etype_wire_connect() {
   $user = $databases['default']['wire']['username'];
   $host = $databases['default']['wire']['host'];
   $database = $databases['default']['wire']['database'];
-  $charset = $databases['default']['wire']['charset'];
-  $collation = $databases['default']['wire']['collation'];
+  //$charset = $databases['default']['wire']['charset'];
+  //$collation = $databases['default']['wire']['collation'];
   //$pdo = $databases['default']['wire']['pdo'];
 
   //$pdo[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
@@ -155,7 +155,7 @@ function _etype_wire_connect() {
 
   try {
     //$dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=$charset;collation=$collation", $user, $password, $pdo);
-    $dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=$charset;collation=$collation", $user, $password);
+    $dbHandle = new PDO("mysql:host=$host;dbname=$database", $user, $password);
 
   } catch (Exception $e) {
     echo "There was an error connecting to the database";
