@@ -231,7 +231,7 @@ function etype_wire_site_admin() {
     );
 
     $form['settings']['etype_wire_use_cron'] = array(
-      '#title' => t('Enable export by cron job.'),
+      '#title' => t('Enable export by cron job'),
       '#type' => 'checkbox',
       '#default_value' => variable_get('etype_wire_use_cron', 0),
     );
@@ -239,7 +239,7 @@ function etype_wire_site_admin() {
     $form['settings']['etype_wire_cron_schedule'] = array(
       '#type' => 'textfield',
       '#title' => t('Cron Schedule'),
-      '#description' => t('Enter a valid cron schedule.'),
+      '#description' => t('Enter a valid cron schedule'),
       '#size' => 55,
       '#default_value' => variable_get('etype_wire_cron_schedule'),
     );
