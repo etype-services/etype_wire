@@ -158,7 +158,6 @@ function _etype_wire_connect() {
 
   try {
     $dbHandle = new PDO("mysql:host=$host;dbname=$database;charset=$charset;collation=$collation", $user, $password, $pdo);
-
   } catch (Exception $e) {
     echo "There was an error connecting to the database";
     exit;

@@ -211,7 +211,7 @@ function etype_wire_site_admin() {
 
     $form['settings']['etype_wire_export_number'] = array(
       '#type' => 'select',
-      '#options' => [0=>0, 5=>5, 10=>10, 15=>15, 20=>20, 25=>25, 30=>30, 35=>35, 40=>40, 45=>45, 50=>50, 'unlimited' => 'Unlimited'],
+      '#options' => [0=>0, 5=>5, 10=>10, 15=>15, 20=>20, 25=>25, 30=>30, 35=>35, 40=>40, 45=>45, 50=>50],
       '#default_value' => variable_get('etype_wire_export_number', '10'),
       '#title' => t('Number of stories to export'),
     );

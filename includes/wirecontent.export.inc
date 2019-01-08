@@ -23,7 +23,6 @@ function etype_wire_node_export() {
   $data = unserialize($res[0]->data);
   $order = 'n.' . variable_get('etype_wire_export_order', 'created');
   $number = variable_get('etype_wire_export_number', '10');
-  if ($number == 'unlimited') unset ($number);
   $days = variable_get('etype_wire_export_since', '10');
   $type = variable_get('etype_wire_content_type', 'article');
   if (!empty($data['sections'])) {
