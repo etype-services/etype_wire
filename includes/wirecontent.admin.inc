@@ -110,7 +110,11 @@ function theme_wire_admin_content($variables) {
     ];
   }
 
-  $output = theme('table', ['header' => $header, 'rows' => $rows]);
+  $per_page = 10;
+  $current_page = pager_default_initialize(count($rows), $per_page);
+  $chunks = array_chunk($rows, $per_page, TRUE);
+  // Show the appropriate items from the list
+  $output = theme('table', ['header' => $header, 'rows' => $chunks[$current_page]]);
   $output .= theme('pager', array('quantity',count($rows)));
   return $output;
 }
