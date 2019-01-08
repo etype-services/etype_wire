@@ -95,7 +95,6 @@ function etype_wire_menu() {
  * Runs every hour at 1 minute past
  * @return mixed
  */
-
 function etype_wire_cronapi($op, $job = NULL) {
 
   $cron = variable_get('etype_wire_cron_setting', '1 * * * *');
