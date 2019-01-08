@@ -75,7 +75,14 @@ function etype_wire_node_add($nid, $site_name) {
       'format' => 'plain_text',
     ];
     $file = file_save($file);
-    $entity->field_image->set([(array) $file]);
+    try {
+      if (!$entity->field_image->set([(array) $file])) {
+        throw new Exception("Wrapper not saved");
+      }
+    } catch(Exception $e) {
+      watchdog('etype_wire', "Could not save image.", $variables = [], $severity = WATCHDOG_NOTICE);
+    }
+
   } else {
     $entity->field_image->set([]);
   }

@@ -94,6 +94,7 @@ function etype_wire_menu() {
  * @param null $job
  * Runs every hour at 1 minute past
  * @return mixed
+ */
 
 function etype_wire_cronapi($op, $job = NULL) {
 
@@ -109,7 +110,6 @@ function etype_wire_cronapi($op, $job = NULL) {
 
   return $items;
 }
- */
 
 /**
  * Implements hook_theme().
