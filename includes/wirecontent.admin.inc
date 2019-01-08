@@ -230,6 +230,12 @@ function etype_wire_site_admin() {
       '#title' => t('Export order'),
     );
 
+    $form['settings']['etype_wire_use_cron'] = array(
+      '#title' => t('Enable export by cron job.'),
+      '#type' => 'checkbox',
+      '#default_value' => variable_get('etype_wire_use_cron', 0),
+    );
+
     $form['#validate'][] = 'etype_wire_site_admin_validate';
 
     return system_settings_form($form);
