@@ -110,7 +110,9 @@ function theme_wire_admin_content($variables) {
     ];
   }
 
-  return theme('table', ['header' => $header, 'rows' => $rows]);
+  $output = theme('table', ['header' => $header, 'rows' => $rows]);
+  $output .= theme('pager', array('quantity',count($rows)));
+  return $output;
 }
 
 /**
