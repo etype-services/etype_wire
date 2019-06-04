@@ -44,7 +44,10 @@ function etype_wire_node_export() {
   if (count($sections) > 0) {
     $db_or = db_or();
     foreach ($sections as $item) {
-      $db_or->condition('t.name', trim($item), 'REGEXP');
+      /* some %$*(er put a trailing pipe */
+      if (!empty($item)) {
+        $db_or->condition('t.name', trim($item), 'REGEXP');
+      }
     }
     $query->condition($db_or);
   }
