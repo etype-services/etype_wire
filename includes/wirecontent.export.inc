@@ -68,6 +68,7 @@ function etype_wire_node_export() {
 
   if (count($nodes) > 0) {
 
+    watchdog('etype_wire', count($nodes), [], WATCHDOG_NOTICE);
     $dbHandle = _etype_wire_connect();
     $text_setting = variable_get('etype_wire_text_format', 'html');
 
