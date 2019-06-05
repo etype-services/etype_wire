@@ -73,7 +73,6 @@ function etype_wire_node_export() {
     $text_setting = variable_get('etype_wire_text_format', 'html');
 
     global $base_url;
-    $site_name = variable_get('site_name', 'Drupal');
     watchdog('etype_wire', $site_name, [], WATCHDOG_NOTICE);
     $etype_wire_cluster = variable_get('etype_wire_cluster');
     $cluster = implode($etype_wire_cluster, ',');
@@ -151,7 +150,7 @@ VALUES (
       $dbHandle->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
       $stmt = $dbHandle->prepare($sql);
       try {
-        //$stmt->execute(["$base_url", "$site_name", "$cluster"]);
+        $stmt->execute(["$base_url", "$site_name", "$cluster"]);
         // echo 'Error occurred:'.implode(":",$dbHandle->errorInfo());
       } catch (Exception $e) {
         print_r($stmt->errorInfo());
