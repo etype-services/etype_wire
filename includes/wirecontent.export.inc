@@ -63,6 +63,7 @@ function etype_wire_node_export() {
   $nodes = [];
   while ($n = $results->fetchAssoc()) {
     $nodes[] = $n;
+    watchdog('etype_wire', "$n", [], WATCHDOG_NOTICE);
   }
 
   if (count($nodes) > 0) {
