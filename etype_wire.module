@@ -151,7 +151,7 @@ function _etype_wire_connect() {
   $database = $databases['default']['wire']['database'];
   $charset = $databases['default']['wire']['charset'];
   $collation = $databases['default']['wire']['collation'];
-  $pdo = $databases['default']['wire']['pdo'];
+  $pdo = isset($databases['default']['wire']['pdo']) ? $databases['default']['wire']['pdo'] : [];
 
   $pdo[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
   $pdo[PDO::ATTR_EMULATE_PREPARES] = FALSE;
