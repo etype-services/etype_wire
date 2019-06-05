@@ -73,7 +73,7 @@ function etype_wire_node_export() {
     $text_setting = variable_get('etype_wire_text_format', 'html');
 
     global $base_url;
-    watchdog('etype_wire', $site_name, [], WATCHDOG_NOTICE);
+    $site_name = variable_get('site_name', 'Drupal');
     $etype_wire_cluster = variable_get('etype_wire_cluster');
     $cluster = implode($etype_wire_cluster, ',');
 
