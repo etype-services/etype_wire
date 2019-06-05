@@ -63,7 +63,7 @@ function etype_wire_node_export() {
   $nodes = [];
   while ($n = $results->fetchAssoc()) {
     $nodes[] = $n;
-    watchdog('etype_wire', $n['title'], [], WATCHDOG_NOTICE);
+    // watchdog('etype_wire', $n['title'], [], WATCHDOG_NOTICE);
   }
 
   if (count($nodes) > 0) {
@@ -74,6 +74,7 @@ function etype_wire_node_export() {
 
     global $base_url;
     $site_name = variable_get('site_name', 'Drupal');
+    watchdog('etype_wire', $site_name, [], WATCHDOG_NOTICE);
     $etype_wire_cluster = variable_get('etype_wire_cluster');
     $cluster = implode($etype_wire_cluster, ',');
 
