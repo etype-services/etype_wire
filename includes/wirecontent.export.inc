@@ -72,7 +72,6 @@ function etype_wire_node_export() {
     $dbHandle = _etype_wire_connect();
     $text_setting = variable_get('etype_wire_text_format', 'html');
 
-    global $base_url;
     $site_name = variable_get('site_name', 'Drupal');
     $etype_wire_cluster = variable_get('etype_wire_cluster');
     $cluster = implode($etype_wire_cluster, ',');
@@ -149,13 +148,14 @@ VALUES (
 
       $dbHandle->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
       $stmt = $dbHandle->prepare($sql);
+      $domain = $_SERVER['SERVER_NAME'];
       try {
-        $stmt->execute(["$base_url", "$site_name", "$cluster"]);
+        $stmt->execute(["$domain", "$site_name", "$cluster"]);
         // echo 'Error occurred:'.implode(":",$dbHandle->errorInfo());
       } catch (Exception $e) {
         print_r($stmt->errorInfo());
         $error = $stmt->errorInfo();
-        watchdog('etype_wire', "There was an error inserting the data for $base_url.", [], WATCHDOG_ERROR);
+        watchdog('etype_wire', "There was an error inserting the data for $domain.", [], WATCHDOG_ERROR);
         die ("Error: (".$error[0].':'.$error[1].') '.$error[2]);
       }
     }
