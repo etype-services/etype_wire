@@ -77,7 +77,7 @@ function etype_wire_node_export() {
     $cluster = implode($etype_wire_cluster, ',');
 
     /* Delete old nodes */
-    $sql = "DELETE FROM node WHERE `site_name` = ?";
+    $sql = "DELETE FROM wire_node WHERE `site_name` = ?";
     $stmt = $dbHandle->prepare($sql);
     $stmt->execute([$site_name]);
 
@@ -120,7 +120,7 @@ function etype_wire_node_export() {
         $node['uuid'] = '';
       }
 
-      $sql = "INSERT INTO node (
+      $sql = "INSERT INTO wire_node (
 `nid`, `vid`, `type`, `language`, `title`, `body`, `file`, `kicker`, `caption`, `uid`, `status`, `created`, `changed`, `comment`, `promote`, `sticky`, `tnid`, `translate`, `uuid`, `site`, `site_name`, `cluster`)
 VALUES (
     '" . $node['nid'] . "',

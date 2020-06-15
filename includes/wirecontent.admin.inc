@@ -60,7 +60,7 @@ function etype_wire_admin_content() {
   /* connect to wire db */
   $dbHandle = _etype_wire_connect();
   $sql = "
-SELECT * FROM `node` n
+SELECT * FROM `wire_node` n
 LEFT JOIN `node_site` ns ON n.nid = ns.original_nid
 WHERE (
   n.site NOT LIKE \"%$url%\"
